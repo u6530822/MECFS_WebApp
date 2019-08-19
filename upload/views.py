@@ -26,16 +26,20 @@ def displayhtml(request):
 def post_new(request):
     '''form = PostForm()
     return render(request, 'Testing/post_edit.html', {'form': form})'''
+    print("save button clicked")
+
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             print("This is post title:",post.title)
             print("This is post content:", post.text)
-            ##post.author = request.user
+            #post.author = request.user
             post.published_date = timezone.now()
-            ##post.save()
-            return redirect('displayhtml')
+            post.save()
+            #return redirect('displayhtml')
+            return redirect('post_detail', pk=post.pk)
+            #return render(request, 'Testing/post_detail.html',  post)
     else:
         form = PostForm()
     return render(request, 'Testing/post_edit.html', {'form': form})
@@ -56,9 +60,11 @@ def post_edit(request, pk):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    print("This is post title ", post.title)
     return render(request, 'Testing/post_detail.html', {'post': post})
 
 def upload_file(request):
+    print("Button pressed")
     if request.method == 'POST':
         uploaded_file= request.FILES['document']
         print("This is uploaded file name:", uploaded_file.name, " file size:",uploaded_file.size)
