@@ -1,0 +1,20 @@
+{% extends 'Testing/base.html' %}
+
+{% block content %}
+    <div class="post">
+        {% if post.published_date %}
+            <div class="date">
+                {{ post.published_date }}
+            </div>
+        {% endif %}
+        <form method="POST" class="post-form">{% csrf_token %}
+        <!–– Results: <input style="height:200px" type="text" name="fname" value={{ results }}><br>
+        <!–– Result2: <input style="height:200px" type="text" name="fname" value={{ results2 }}><br>
+
+            {{ BloodSamples.as_ul}}
+            <button type="submit" class="save btn btn-default">Upload to DB</button>
+
+    </form>
+
+    </div>
+{% endblock %}
