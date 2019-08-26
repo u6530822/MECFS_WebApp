@@ -1,11 +1,29 @@
 {% extends 'Testing/base.html' %}
 
 {% block content %}
-    <h2>upload</h2>
+    <style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+    <h2>Upload File </h2>
     <form method="post" enctype="multipart/form-data">
     {%  csrf_token %}
     <input type="file" name="document" >
         <button type="submit"> Upload file</button>
     </form>
+
 
 {% endblock %}
