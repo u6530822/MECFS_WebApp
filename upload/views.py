@@ -121,3 +121,7 @@ def upload_file(request):
 
     return render(request, 'Testing/upload.html')
 
+def login(request):
+    return render(request, 'Testing/login.html')
+
+
