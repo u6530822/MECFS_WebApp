@@ -82,6 +82,7 @@ def post_results(request):
             Bloodpost = Bloodform.save(commit=False)
             print("This is post title line 35:",Bloodpost.Sodium)
             print("This is post content:", Bloodpost.Potassium)
+            print("Bloodform Date time is:", Bloodpost.Date_Time,"THE REQUEST POST:", request.POST)
 
 
     context = request.GET
@@ -98,6 +99,7 @@ def upload_DB(request):
     if request.method == "POST":
         print("In this loop line 84")
         Bloodform = BloodSampleForm(request.POST)
+        print("Bloodform Date time is:",Bloodform.Date_Time)
 
 
 
@@ -122,6 +124,17 @@ def upload_file(request):
     return render(request, 'Testing/upload.html')
 
 def login(request):
-    return render(request, 'Testing/login.html')
+    print("Button pressed line 125")
+
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        loginpost = form.save(commit=False)
+        print("Button pressed line 127:",request.POST)
+        if(loginpost.username=='mecfs' and loginpost.password=='mecfs'):
+            print("Correct password")
+            return redirect(upload_file)
+    else:
+        form = LoginForm()
+    return render(request, 'Testing/login.html',{'form':form})
 
 

@@ -35,3 +35,17 @@ class BloodSamples(models.Model):
 
     def __str__(self):
         return self.Reference
+
+
+class Login(models.Model):
+    #author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    username = models.CharField(max_length=200)
+    password = models.CharField(max_length=200)
+
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.username

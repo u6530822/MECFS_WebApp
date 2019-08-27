@@ -19,6 +19,17 @@ class BloodSampleForm(forms.ModelForm):
         fields = ('Reference','LabNo','Date_Time','Potassium','Sodium','Chloride','MCH')
 
 
+class LoginForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class':"form-control form-control-user",}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control form-control-user",}))
+    class Meta:
+        model = Login
+
+        fields = ('username','password')
+
+
+
+
 
 
 
