@@ -89,8 +89,15 @@ def post_results(request):
 
     context = request.GET
     mydict = context.dict()
+    if "HAEMOGLOBIN" in mydict:
+        BloodSample = BloodSampleForm2(initial=mydict)
+        print("in haemoglobin loop")
+    elif "Potassium" in mydict:
+        BloodSample = BloodSampleForm(initial=mydict)
+        print("in Potassium loop")
+
     print("debug at line 75:", type(mydict))
-    BloodSample = BloodSampleForm(initial=mydict)
+    #BloodSample = BloodSampleForm(initial=mydict)
     args = {'BloodSamples': BloodSample}
     return render(request, 'Testing/post_results.html', args)
 

@@ -35,6 +35,11 @@ class BloodSampleForm(forms.ModelForm):
         model = BloodSamples
         fields = ('Reference_No','LabNo','Date_Time','Potassium','Sodium','Chloride', 'Urea', 'Creatinine','T_Protein','Albumin','Bilirubin','AST','ALP','GGT','eGFR','Bicarbonate')
 
+class BloodSampleForm2(forms.ModelForm):
+    class Meta:
+        model = BloodSamples2
+        fields = ('Reference_No','HAEMOGLOBIN','Date_Time','RBC','PCV','MCV', 'MCH', 'MCHC','RDW','wcc','Neutrophils','Lymphocytes','Monocytes','Eosinophils','Basophils','PLATELETS','ESR')
+
 
 class LoginForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class':"form-control form-control-user",}))
