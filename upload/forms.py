@@ -14,17 +14,26 @@ class ResultsPage(forms.ModelForm):
         fields = ('text','title')
 
 class BloodSampleForm(forms.ModelForm):
-    Reference = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control form-control-user",}))
+    Reference_No = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control form-control-user",}))
     LabNo = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control form-control-user",}))
     Date_Time = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
     Potassium = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
     Sodium = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
     Chloride = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
-    MCH = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
+    Urea= forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
+    Creatinine = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
+    T_Protein= forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
+    Albumin =  forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
+    Bilirubin  = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
+    AST  = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
+    ALP  = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
+    GGT = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
+    eGFR = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
+    Bicarbonate = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
 
     class Meta:
         model = BloodSamples
-        fields = ('Reference','LabNo','Date_Time','Potassium','Sodium','Chloride','MCH')
+        fields = ('Reference_No','LabNo','Date_Time','Potassium','Sodium','Chloride', 'Urea', 'Creatinine','T_Protein','Albumin','Bilirubin','AST','ALP','GGT','eGFR','Bicarbonate')
 
 
 class LoginForm(forms.ModelForm):
@@ -34,11 +43,3 @@ class LoginForm(forms.ModelForm):
         model = Login
 
         fields = ('username','password')
-
-
-
-
-
-
-
-

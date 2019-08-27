@@ -8,8 +8,6 @@ from PIL import Image
 from .ImageToText import  *
 from django.urls import reverse
 from urllib.parse import urlencode
-
-
 import pytesseract
 
 # Create your views here.

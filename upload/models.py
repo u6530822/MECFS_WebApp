@@ -21,13 +21,22 @@ class Post(models.Model):
 
 class BloodSamples(models.Model):
     #author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    Reference = models.CharField(max_length=200)
+    Reference_No = models.CharField(max_length=200)
     LabNo = models.CharField(max_length=200)
     Sodium = models.CharField(max_length=200)
     Potassium = models.CharField(max_length=200)
     Chloride = models.CharField(max_length=200)
-    MCH = models.CharField(max_length=200)
     Date_Time = models.CharField(max_length=200)
+    Urea= models.CharField(max_length=200)
+    Creatinine = models.CharField(max_length=200)
+    T_Protein= models.CharField(max_length=200)
+    Albumin = models.CharField(max_length=200)
+    Bilirubin = models.CharField(max_length=200)
+    AST = models.CharField(max_length=200)
+    ALP = models.CharField(max_length=200)
+    GGT= models.CharField(max_length=200)
+    eGFR = models.CharField(max_length=200)
+    Bicarbonate = models.CharField(max_length=200)
 
     def publish(self):
         self.published_date = timezone.now()
