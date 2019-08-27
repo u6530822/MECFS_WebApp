@@ -8,8 +8,6 @@ from PIL import Image
 from .ImageToText import  *
 from django.urls import reverse
 from urllib.parse import urlencode
-
-
 import pytesseract
 
 # Create your views here.
@@ -26,21 +24,25 @@ def displayhtml(request):
 def post_new(request):
     '''form = PostForm()
     return render(request, 'Testing/post_edit.html', {'form': form})'''
-    print("save button clicked")
 
     if request.method == "POST":
-        form = PostForm(request.POST)
-        print("line 33 form is ",form)
-        print("line 34 form type is ", type(form))
-        if form.is_valid():
-            post = form.save(commit=False)
-            print("This is post title line 35:",post.title)
-            print("This is post content:", post.text)
-            #post.author = request.user
-            post.published_date = timezone.now()
-            post.save()
-            #return redirect('displayhtml')
-            return redirect('post_detail', pk=post.pk)
+        print("This is the request.post:",request.POST)
+        if request.POST.get("save"):
+            form = PostForm(request.POST)
+            print("line 33 form is ",form)
+            print("line 34 form type is ", type(form))
+            if form.is_valid():
+                post = form.save(commit=False)
+                print("This is post title line 35:",post.title)
+                print("This is post content:", post.text)
+                #post.author = request.user
+                post.published_date = timezone.now()
+                post.save()
+                # #return redirect('displayhtml')
+                return redirect('post_detail', pk=post.pk)
+        elif request.POST.get("displayhtml"):
+            print("In displayHTML loop")
+            return redirect(displayhtml)
             #return render(request, 'Testing/post_detail.html',  post)
     else:
         form = PostForm()
@@ -87,8 +89,15 @@ def post_results(request):
 
     context = request.GET
     mydict = context.dict()
+    if "HAEMOGLOBIN" in mydict:
+        BloodSample = BloodSampleForm2(initial=mydict)
+        print("in haemoglobin loop")
+    elif "Potassium" in mydict:
+        BloodSample = BloodSampleForm(initial=mydict)
+        print("in Potassium loop")
+
     print("debug at line 75:", type(mydict))
-    BloodSample = BloodSampleForm(initial=mydict)
+    #BloodSample = BloodSampleForm(initial=mydict)
     args = {'BloodSamples': BloodSample}
     return render(request, 'Testing/post_results.html', args)
 
