@@ -4,7 +4,8 @@
     <h2>New Entry</h2>
     <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_ul }}
-        <button type="submit" class="save btn btn-default">Save</button>
-    <a class="btn btn-default" href="{% url 'displayhtml'  %}"><span>DisplayHTML</span></a>
+        <button type="submit" name="save" value="save" class="save btn btn-default">Save</button>
+        <button type="submit" name="displayhtml" value="displayhtml" class="save btn btn-default">DisplayHTML</button>
+
     </form>
 {% endblock %}

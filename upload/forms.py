@@ -14,6 +14,14 @@ class ResultsPage(forms.ModelForm):
         fields = ('text','title')
 
 class BloodSampleForm(forms.ModelForm):
+    Reference = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control form-control-user",}))
+    LabNo = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control form-control-user",}))
+    Date_Time = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
+    Potassium = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
+    Sodium = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
+    Chloride = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
+    MCH = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
+
     class Meta:
         model = BloodSamples
         fields = ('Reference','LabNo','Date_Time','Potassium','Sodium','Chloride','MCH')
