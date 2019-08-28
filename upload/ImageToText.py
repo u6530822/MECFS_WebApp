@@ -2,7 +2,6 @@ import pytesseract
 from PIL import Image
 import re
 
-list_of_dict = []
 
 class ImageToText:
 
@@ -62,7 +61,7 @@ class ImageToText:
 
 
     def ReturnObject(self):
-
+        list_of_dict = []
         image = Image.open(self.name)
         # Configure tesseract to treat each document line as a single line by setting --psm to 6
         text = pytesseract.image_to_string(image, lang="eng", config='--psm 6').splitlines()
