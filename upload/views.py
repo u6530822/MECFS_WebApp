@@ -86,7 +86,6 @@ def post_results(request):
             print("This is post content:", Bloodpost.Potassium)
             print("Bloodform Date time is:", Bloodpost.Date_Time,"THE REQUEST POST:", request.POST)
 
-
     context = request.GET
     mydict = context.dict()
     if "HAEMOGLOBIN" in mydict:
@@ -101,7 +100,6 @@ def post_results(request):
     args = {'BloodSamples': BloodSample}
     return render(request, 'Testing/post_results.html', args)
 
-
 def upload_DB(request):
     print("In this loop line 82, the request method is ", request.method)
 
@@ -110,25 +108,24 @@ def upload_DB(request):
         Bloodform = BloodSampleForm(request.POST)
         print("Bloodform Date time is:",Bloodform.Date_Time)
 
-
-
 def upload_file(request):
     print("Button pressed line 92")
     if request.method == 'POST':
-        uploaded_file= request.FILES['document']
-        print("This is uploaded file name:", uploaded_file.name, " file size:",uploaded_file.size)
-        object_img2txt = ImageToText(uploaded_file)
+        uploaded_file= request.FILES.getlist('document')
+        for file in uploaded_file:
+            print("This is uploaded file name:", file.name, " file size:",file.size)
+        object_img2txt = ImageToText(uploaded_file[0])   #TODO: temporarily put it here, untill we could figure a way to manage multiple files in forms
         object_img2txt_output = object_img2txt.ReturnObject()
         print("THis is the output line 98:",object_img2txt_output[0])
         print(type(object_img2txt_output[0]))
         BloodSample = BloodSampleForm(initial=object_img2txt_output[0])
         args = {'BloodSamples': BloodSample}  # can pass in multiple args not use for now
-        # can have all the field in the database then selectively choose, can use "if" see post_details.html
+
+        ## save entries in sql and then encode the url with the primary key
         base_url = reverse('post_results')
         query_string = urlencode(object_img2txt_output[0])
         url = '{}?{}'.format(base_url, query_string)
         return redirect(url)
-
 
     return render(request, 'Testing/upload.html')
 
@@ -146,4 +143,5 @@ def login(request):
         form = LoginForm()
     return render(request, 'Testing/login.html',{'form':form})
 
-
+def display_table(request):
+    return render(request, 'Testing/display_table.html', {})

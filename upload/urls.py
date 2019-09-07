@@ -14,5 +14,7 @@ urlpatterns = [
     path('post/<pk>/remove/',views.post_remove,name='post_remove'),
     path('upload_DB',views.upload_DB,name='upload_DB'),
     path('login', views.login, name='login'),
+    path('display_table', views.display_table, name='display_table'),
+
 
 ]
