@@ -116,7 +116,7 @@ def upload_file(request):
         args = {'BloodSamples': BloodSample}  # can pass in multiple args not use for now
         # can have all the field in the database then selectively choose, can use "if" see post_details.html
         base_url = reverse('post_results')
-        query_string = urlencode(object_img2txt_output[0])
+        query_string = urlencode(object_img2txt_output)
         url = '{}?{}'.format(base_url, query_string)
         return redirect(url)
 
