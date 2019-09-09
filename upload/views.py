@@ -86,6 +86,7 @@ def post_results(request):
             print("This is post content:", Bloodpost.Potassium)
             print("Bloodform Date time is:", Bloodpost.Date_Time,"THE REQUEST POST:", request.POST)
 
+    print("This is request.GET line89",request.GET)
     context = request.GET
     mydict = context.dict()
     if "HAEMOGLOBIN" in mydict:
@@ -108,26 +109,64 @@ def upload_DB(request):
         Bloodform = BloodSampleForm(request.POST)
         print("Bloodform Date time is:",Bloodform.Date_Time)
 
+list_of_files = []
+list_of_dict= []
 def upload_file(request):
     print("Button pressed line 92")
-    if request.method == 'POST':
+
+
+    #if request.method == 'POST':
+    if request.POST.get("upload"):
         uploaded_file= request.FILES.getlist('document')
         for file in uploaded_file:
             print("This is uploaded file name:", file.name, " file size:",file.size)
-        object_img2txt = ImageToText(uploaded_file[0])   #TODO: temporarily put it here, untill we could figure a way to manage multiple files in forms
-        object_img2txt_output = object_img2txt.ReturnObject()
-        print("THis is the output line 98:",object_img2txt_output[0])
-        print(type(object_img2txt_output[0]))
-        BloodSample = BloodSampleForm(initial=object_img2txt_output[0])
-        args = {'BloodSamples': BloodSample}  # can pass in multiple args not use for now
+            list_of_files.append(file.name)
+            object_img2txt = ImageToText(file)   #TODO: temporarily put it here, untill we could figure a way to manage multiple files in forms
+            object_img2txt_output = object_img2txt.ReturnObject()
+            list_of_dict.append(object_img2txt_output)
+
+        print("This is the list of dict",list_of_dict)
+
+        if "HAEMOGLOBIN" in object_img2txt_output[0]:
+            BloodSample = BloodSampleForm2(initial=object_img2txt_output[0])
+            print("in haemoglobin loop")
+
+        elif "Potassium" in object_img2txt_output[0]:
+            BloodSample = BloodSampleForm(initial=object_img2txt_output[0])
+            print("in potassium loop")
+
+        args = {'button': list_of_files, 'form': BloodSample}
+        return render(request, 'Testing/display_table.html', args)
+
+    for file in list_of_files:
+        if request.POST.get(file):
+            for dict in list_of_dict:
+                print("This is dict filename:",type(dict[0]), dict,"-->",dict[0]["filename"],"<--")
+                filename = dict[0].get("filename")
+                print("Files in list of files line 148:", file,"<--",dict[0]["filename"] == file)
+                #if file in dict[0]["filename"]:
+                if dict[0]["filename"] == file:
+                    print("line 150:in this loop")
+                    if "HAEMOGLOBIN" in dict[0]:
+                        BloodSample = BloodSampleForm2(initial=dict[0])
+                        print("line 151:in haemoglobin loop")
+
+                    elif "Potassium" in dict[0]:
+                        BloodSample = BloodSampleForm(initial=dict[0])
+                        print("line 155:in potassium loop")
+
+                    args = {'button': list_of_files, 'form': BloodSample}
+                    return render(request, 'Testing/display_table.html', args)
 
         ## save entries in sql and then encode the url with the primary key
-        base_url = reverse('post_results')
-        query_string = urlencode(object_img2txt_output[0])
-        url = '{}?{}'.format(base_url, query_string)
-        return redirect(url)
+        #base_url = reverse('post_results')
+        #query_string = urlencode(object_img2txt_output[0])
+        #url = '{}?{}'.format(base_url, query_string)
+        #return redirect(url)
 
     return render(request, 'Testing/upload.html')
+
+
 
 def login(request):
     print("Button pressed line 125")
@@ -144,4 +183,16 @@ def login(request):
     return render(request, 'Testing/login.html',{'form':form})
 
 def display_table(request):
-    return render(request, 'Testing/display_table.html', {})
+    # save it in the sql database, use dictionary, then url encode the primary key, then retriev it from this side
+    button=['red', 'blue', 'green']
+    print("This is request.post", request.POST)
+    form=null()
+    if request.POST.get("red"):
+        print("In the red loop")
+        form = BloodSampleForm2()
+    elif request.POST.get("green"):
+        print("In the green loop")
+        form = BloodSampleForm()
+
+    args = {'button': button,'form':form}
+    return render(request, 'Testing/display_table.html', args)

@@ -41,6 +41,7 @@ class BloodSampleForm2(forms.ModelForm):
         fields = ('Reference_No','HAEMOGLOBIN','Date_Time','RBC','PCV','MCV', 'MCH', 'MCHC','RDW','wcc','Neutrophils','Lymphocytes','Monocytes','Eosinophils','Basophils','PLATELETS','ESR')
 
 
+
 class LoginForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class':"form-control form-control-user",}))
     username = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control form-control-user",}))
@@ -48,3 +49,10 @@ class LoginForm(forms.ModelForm):
         model = Login
 
         fields = ('username','password')
+
+class null(forms.ModelForm):
+    class Meta:
+        model = BloodSamples2
+        fields = ()
+
+
