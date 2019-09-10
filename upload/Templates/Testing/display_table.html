@@ -25,17 +25,19 @@
 <div class="row">
   <div class="col-md-6">
     <!-- Left column panels -->
+   <div class="list-group">
 <form method="POST" class="post-form">{% csrf_token %}
         {% for items in button %}
-                     <button type="submit" name="{{ items }}" value="{{ items }}" class="save btn btn-default">{{ items}}</button>
+                     <button type="submit" name="{{ items }}" value="{{ items }}" class="save btn btn-default list-group-item list-group-item-action" onclick="highlight(this)">{{ items}}</button>
         {% endfor %}
  </form>
+   </div>
 
   </div>
-  <div class="col-md-6">
- <form method="POST" class="post-form">{% csrf_token %}
+  <div class="col-md-6 ">
+ <form method="POST" class="post-form" >{% csrf_token %}
         {{ form.as_ul }}
-        <button type="submit" name="save" value="save" class="save btn btn-default">Upload</button>
+        <button type="submit" name="save" value="save" class="save btn btn-default ">Upload</button>
 
     </form>
   </div>
@@ -44,3 +46,18 @@
 
 </body>
 </html>
+
+
+<script type="text/javascript">
+var buttonClicked = null;
+
+function highlight(element) {
+    if (buttonClicked != null) {
+        buttonClicked.style.background = "grey";
+        buttonClicked.style.color = "black";
+    }
+    buttonClicked = element;
+    buttonClicked.style.background = "blue";
+    buttonClicked.style.color = "white";
+}
+</script>

@@ -94,24 +94,24 @@ class ImageToText:
             # Spaces surrounding PTH are to ensure other variation of PTH is not taken into account. Eg: PTH-C
             elif ' PTH ' in text[val]:
                 pth = ImageToText.extract_value(self, text, val, 'PTH')
-                if pth == "N/A" and 'Parathyroid Hormone' not in result_dict:
-                    result_dict['Parathyroid Hormone'] = "N/A"
+                if pth == "N/A" and 'Parathyroid_Hormone' not in result_dict:
+                    result_dict['Parathyroid_Hormone'] = "N/A"
                 elif pth != "N/A":
-                    result_dict['Parathyroid Hormone'] = pth
+                    result_dict['Parathyroid_Hormone'] = pth
 
             elif 'Vitamin D' in text[val]:
                 print("check")
                 print(text[val])
                 vitamin_d = ImageToText.extract_value(self, text, val, 'VitaminD')
-                if vitamin_d == "N/A" and 'Vitamin D' not in result_dict:
-                    result_dict['Vitamin D'] = "N/A"
+                if vitamin_d == "N/A" and 'Vitamin_D' not in result_dict:
+                    result_dict['Vitamin_D'] = "N/A"
                 elif vitamin_d != "N/A":
-                    result_dict['Vitamin D'] = vitamin_d
+                    result_dict['Vitamin_D'] = vitamin_d
 
             elif text[val]:
                 field_str_list = ['Sodium', 'Potassium', 'Chloride', 'Bicarbonate', 'Urea', 'Creatinine', 'eGFR',
                                   'T.Protein', 'Albumin', 'ALP', 'Bilirubin', 'GGT',
-                                  'AST', 'ALT', 'HAEMOGLOBIN', 'RBC', 'PCV', 'MCV', 'MCHC', 'RDW', 'wcc', 'Neutrophils',
+                                  'AST', 'ALT', 'HAEMOGLOBIN', 'RBC', 'PCV', 'MCV', 'MCHC', 'RDW', 'WCC', 'Neutrophils',
                                   'Lymphocytes', 'Monocytes',
                                   'Eosinophils', 'Basophils', 'PLATELETS', 'ESR']  # T.Protein
 
