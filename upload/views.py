@@ -128,17 +128,7 @@ def upload_file(request):
             object_img2txt_output = object_img2txt.ReturnObject()
             list_of_dict.append(object_img2txt_output)
 
-        print("This is the list of dict",list_of_dict)
-
-        if "HAEMOGLOBIN" in object_img2txt_output[0]:
-            BloodSample = BloodSampleForm2(initial=object_img2txt_output[0])
-            print("in haemoglobin loop")
-
-        elif "Potassium" in object_img2txt_output[0]:
-            BloodSample = BloodSampleForm(initial=object_img2txt_output[0])
-            print("in potassium loop")
-
-        args = {'button': list_of_files, 'form': BloodSample}
+        args = {'button': list_of_files, 'form': returnform(object_img2txt_output[0])}
         return render(request, 'Testing/display_table.html', args)
 
     for file in list_of_files:
@@ -149,16 +139,7 @@ def upload_file(request):
                 print("Files in list of files line 148:", file,"<--",dict[0]["filename"] == file)
                 #if file in dict[0]["filename"]:
                 if dict[0]["filename"] == file:
-                    print("line 150:in this loop")
-                    if "HAEMOGLOBIN" in dict[0]:
-                        BloodSample = BloodSampleForm2(initial=dict[0])
-                        print("line 151:in haemoglobin loop")
-
-                    elif "Potassium" in dict[0]:
-                        BloodSample = BloodSampleForm(initial=dict[0])
-                        print("line 155:in potassium loop")
-
-                    args = {'button': list_of_files, 'form': BloodSample}
+                    args = {'button': list_of_files, 'form': returnform(dict[0])}
                     return render(request, 'Testing/display_table.html', args)
 
         ## save entries in sql and then encode the url with the primary key
@@ -169,7 +150,21 @@ def upload_file(request):
 
     return render(request, 'Testing/upload.html')
 
+def returnform(dictionary):
 
+    if "HAEMOGLOBIN" in dictionary:
+        BloodSample = BloodSampleForm2(initial=dictionary)
+
+    elif "Potassium" in dictionary:
+        BloodSample = BloodSampleForm(initial=dictionary)
+
+    elif "Parathyroid_Hormone" in dictionary:
+        BloodSample = BloodSampleForm3(initial=dictionary)
+
+    elif "Vitamin_D" in dictionary:
+        BloodSample = BloodSampleForm4(initial=dictionary)
+
+    return BloodSample
 
 def login(request):
     print("Button pressed line 125")
