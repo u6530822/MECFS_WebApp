@@ -117,6 +117,9 @@ def upload_file(request):
 
     #if request.method == 'POST':
     if request.POST.get("upload"):
+        list_of_dict.clear()
+        list_of_files.clear()
+
         uploaded_file= request.FILES.getlist('document')
         for file in uploaded_file:
             print("This is uploaded file name:", file.name, " file size:",file.size)

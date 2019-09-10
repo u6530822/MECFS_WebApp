@@ -25,11 +25,13 @@
 <div class="row">
   <div class="col-md-6">
     <!-- Left column panels -->
+   <div class="list-group">
 <form method="POST" class="post-form">{% csrf_token %}
         {% for items in button %}
-                     <button type="submit" name="{{ items }}" value="{{ items }}" class="save btn btn-default">{{ items}}</button>
+                     <button type="submit" name="{{ items }}" value="{{ items }}" class="save btn btn-default list-group-item list-group-item-action">{{ items}}</button>
         {% endfor %}
  </form>
+   </div>
 
   </div>
   <div class="col-md-6">
