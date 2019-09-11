@@ -62,5 +62,3 @@ class null(forms.ModelForm):
     class Meta:
         model = BloodSamples2
         fields = ()
-
-
