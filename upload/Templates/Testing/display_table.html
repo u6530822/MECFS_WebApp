@@ -2,12 +2,12 @@
 {% load static %}
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Results Page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/bootstrap.min.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% static "font-awesome/css/font-awesome.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/bootstrap.min.css" %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "font-awesome/css/font-awesome.min.css" %}"/>
 
     <script type="text/javascript" src="{% static "js/jquery-1.10.2.min.js" %}"></script>
     <script type="text/javascript" src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
@@ -17,47 +17,49 @@
 
 <div class="container">
 
-<div class="page-header">
-    <h1>Data Values</h1>
-</div>
+    <div class="page-header">
+        <h1>Data Values</h1>
+    </div>
 
-<!-- Editable Table - START -->
-<div class="row">
-  <div class="col-md-6">
-    <!-- Left column panels -->
-   <div class="list-group">
-<form method="POST" class="post-form">{% csrf_token %}
-        {% for items in button %}
-                     <button type="submit" name="{{ items }}" value="{{ items }}" class="save btn btn-default list-group-item list-group-item-action" onclick="highlight(this)">{{ items}}</button>
-        {% endfor %}
- </form>
-   </div>
+    <!-- Editable Table - START -->
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Left column panels -->
+            <div class="list-group">
+                <form method="POST" class="post-form">{% csrf_token %}
+                    {% for items in button %}
+                        <button type="submit" name="{{ items }}" value="{{ items }}"
+                                class="save btn btn-default list-group-item list-group-item-action"
+                                onclick="highlight(this)">{{ items }}</button>
+                    {% endfor %}
+                </form>
+            </div>
 
-  </div>
-  <div class="col-md-6 ">
- <form method="POST" class="post-form" >{% csrf_token %}
-        {{ form.as_ul }}
-        <button type="submit" name="save" value="save" class="save btn btn-default ">Upload</button>
+        </div>
+        <div class="col-md-6 ">
+            <form method="POST" class="post-form">{% csrf_token %}
+                {{ form.as_ul }}
+                <button type="submit" name="save" value="save" class="save btn btn-default ">Upload</button>
 
-    </form>
-  </div>
+            </form>
+        </div>
 
-</div>
+    </div>
 
 </body>
 </html>
 
 
 <script type="text/javascript">
-var buttonClicked = null;
+    var buttonClicked = null;
 
-function highlight(element) {
-    if (buttonClicked != null) {
-        buttonClicked.style.background = "grey";
-        buttonClicked.style.color = "black";
+    function highlight(element) {
+        if (buttonClicked != null) {
+            buttonClicked.style.background = "grey";
+            buttonClicked.style.color = "black";
+        }
+        buttonClicked = element;
+        buttonClicked.style.background = "blue";
+        buttonClicked.style.color = "white";
     }
-    buttonClicked = element;
-    buttonClicked.style.background = "blue";
-    buttonClicked.style.color = "white";
-}
 </script>
