@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Editable Table Template | PrepBootstrap</title>
+    <title>Results Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="stylesheet" type="text/css" href="{% static "bootstrap/css/bootstrap.min.css" %}" />
@@ -25,159 +25,39 @@
 <div class="row">
   <div class="col-md-6">
     <!-- Left column panels -->
-    <ul class="list-group">
-    <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-    <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-    <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-    <a href="#" class="list-group-item list-group-item-action">Vestibulum at eros</a>
-</ul>
+   <div class="list-group">
+<form method="POST" class="post-form">{% csrf_token %}
+        {% for items in button %}
+                     <button type="submit" name="{{ items }}" value="{{ items }}" class="save btn btn-default list-group-item list-group-item-action" onclick="highlight(this)">{{ items}}</button>
+        {% endfor %}
+ </form>
+   </div>
 
   </div>
+  <div class="col-md-6 ">
+ <form method="POST" class="post-form" >{% csrf_token %}
+        {{ form.as_ul }}
+        <button type="submit" name="save" value="save" class="save btn btn-default ">Upload</button>
 
-<div class="col-md-6">
-    <div class="panel panel-default" >
-        <div class="panel-heading">
-            <h4 class="text-center">Field List<span class="fa fa-edit pull-right bigicon"></span></h4>
-        </div>
-        <div class="panel-body text-center">
-            <div id="grid"></div>
-        </div>
-    </div>
-</div>
-
-<!-- you need to include the shieldui css and js assets in order for the grids to work -->
-<link rel="stylesheet" type="text/css" href="https://www.prepbootstrap.com/Content/shieldui-lite/dist/css/light/all.min.css" />
-<script type="text/javascript" src="https://www.prepbootstrap.com/Content/shieldui-lite/dist/js/shieldui-lite-all.min.js"></script>
-
-<script type="text/javascript" src="https://www.prepbootstrap.com/Content/data/shortGridData.js"></script>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#grid").shieldGrid({
-            dataSource: {
-                data: gridData,
-                schema: {
-                    fields: {
-                        id: { path: "id", type: Number },
-                        age: { path: "age", type: Number },
-                        name: { path: "name", type: String },
-                        company: { path: "company", type: String },
-                        month: { path: "month", type: Date },
-                        isActive: { path: "isActive", type: Boolean },
-                        email: { path: "email", type: String },
-                        transport: { path: "transport", type: String }
-                    }
-                }
-            },
-            sorting: {
-                multiple: true
-            },
-            rowHover: false,
-            columns: [
-                { field: "name", title: "Field Name", width: "50px"},
-                { field: "transport", title: "Value", width: "50px" },
-                {
-                    width: 20,
-                    title: "Update",
-                    buttons: [
-                        { commandName: "edit", caption: "Edit" },
-                    ]
-                }
-            ],
-            editing: {
-                enabled: true,
-                mode: "popup",
-                confirmation: {
-                    "delete": {
-                        enabled: true,
-                        template: function (item) {
-                            return "Delete row with ID = " + item.id
-                        }
-                    }
-                }
-            }
-        });
-        $(document).on('click', '.list-group-item', function(e) {
-            alert('You clicked the third ListGroupItem');
-            $("#grid").shieldGrid({
-            dataSource: {
-                data: gridData,
-                schema: {
-                    fields: {
-                        id: { path: "id", type: Number },
-                        age: { path: "age", type: Number },
-                        name: { path: "name", type: String },
-                        company: { path: "company", type: String },
-                        month: { path: "month", type: Date },
-                        isActive: { path: "isActive", type: Boolean },
-                        email: { path: "email", type: String },
-                        transport: { path: "transport", type: String }
-                    }
-                }
-            },
-            sorting: {
-                multiple: true
-            },
-            rowHover: false,
-            columns: [
-                { field: "name", title: "Field Name", width: "50px"},
-                { field: "transport", title: "Value", width: "50px" },
-                {
-                    width: 20,
-                    title: "Update",
-                    buttons: [
-                        { commandName: "edit", caption: "Edit" },
-                    ]
-                }
-            ],
-            editing: {
-                enabled: true,
-                mode: "popup",
-                confirmation: {
-                    "delete": {
-                        enabled: true,
-                        template: function (item) {
-                            return "Delete row with ID = " + item.id
-                        }
-                    }
-                }
-            }
-        });
-        });
-
-
-
-    });
-</script>
-
-<style type="text/css">
-    .sui-button-cell
-    {
-        text-align: right;
-    }
-
-    .sui-checkbox
-    {
-        font-size: 17px !important;
-        padding-bottom: 4px !important;
-    }
-
-    .deleteButton img
-    {
-        margin-right: 3px;
-        vertical-align: bottom;
-    }
-
-    .bigicon
-    {
-        color: #5CB85C;
-        font-size: 20px;
-    }
-</style>
-
-<!-- Editable Table - END -->
+    </form>
+  </div>
 
 </div>
 
 </body>
 </html>
+
+
+<script type="text/javascript">
+var buttonClicked = null;
+
+function highlight(element) {
+    if (buttonClicked != null) {
+        buttonClicked.style.background = "grey";
+        buttonClicked.style.color = "black";
+    }
+    buttonClicked = element;
+    buttonClicked.style.background = "blue";
+    buttonClicked.style.color = "white";
+}
+</script>

@@ -123,7 +123,7 @@ def upload_file(request):
 
         ## save entries in sql and then encode the url with the primary key
         base_url = reverse('post_results')
-        query_string = urlencode(object_img2txt_output)
+        query_string = urlencode(object_img2txt_output[0])
         url = '{}?{}'.format(base_url, query_string)
         return redirect(url)
 
