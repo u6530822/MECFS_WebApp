@@ -15,7 +15,6 @@ class ResultsPage(forms.ModelForm):
 
 class BloodSampleForm(forms.ModelForm):
     Reference_No = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control form-control-user",}))
-    LabNo = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control form-control-user",}))
     Date_Time = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
     Potassium = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
     Sodium = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
@@ -33,7 +32,7 @@ class BloodSampleForm(forms.ModelForm):
 
     class Meta:
         model = BloodSamples
-        fields = ('Reference_No','LabNo','Date_Time','Potassium','Sodium','Chloride', 'Urea', 'Creatinine','T_Protein','Albumin','Bilirubin','AST','ALP','GGT','eGFR','Bicarbonate')
+        fields = ('Reference_No','Date_Time','Potassium','Sodium','Chloride', 'Urea', 'Creatinine','T_Protein','Albumin','Bilirubin','AST','ALP','GGT','eGFR','Bicarbonate')
 
 class BloodSampleForm2(forms.ModelForm):
     class Meta:
