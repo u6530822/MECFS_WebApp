@@ -38,8 +38,17 @@ class BloodSampleForm(forms.ModelForm):
 class BloodSampleForm2(forms.ModelForm):
     class Meta:
         model = BloodSamples2
-        fields = ('Reference_No','HAEMOGLOBIN','Date_Time','RBC','PCV','MCV', 'MCH', 'MCHC','RDW','wcc','Neutrophils','Lymphocytes','Monocytes','Eosinophils','Basophils','PLATELETS','ESR')
+        fields = ('Reference_No','HAEMOGLOBIN','Date_Time','RBC','PCV','MCV', 'MCH', 'MCHC','RDW','WCC','Neutrophils','Lymphocytes','Monocytes','Eosinophils','Basophils','PLATELETS','ESR')
 
+class BloodSampleForm3(forms.ModelForm):
+    class Meta:
+        model = BloodSamples3
+        fields = ('Reference_No','Date_Time','Parathyroid_Hormone')
+
+class BloodSampleForm4(forms.ModelForm):
+    class Meta:
+        model = BloodSamples4
+        fields = ('Reference_No','Date_Time','Vitamin_D')
 
 class LoginForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class':"form-control form-control-user",}))
@@ -48,3 +57,10 @@ class LoginForm(forms.ModelForm):
         model = Login
 
         fields = ('username','password')
+
+class null(forms.ModelForm):
+    class Meta:
+        model = BloodSamples2
+        fields = ()
+
+
