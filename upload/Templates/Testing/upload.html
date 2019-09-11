@@ -64,7 +64,8 @@
                     {% csrf_token %}
                     <input id="submit-file" type="file" name="document" accept="image/png, image/jpeg"
                            multiple style="display: none"/>
-                    <button type="submit"> Upload file</button>
+                    <button type="submit" name="upload" value="upload" class="save btn btn-default"> Upload file</button>
+{#                    <button type="submit"> Upload file</button>#}
                 </form>
             </div>
 
