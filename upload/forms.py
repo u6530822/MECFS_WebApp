@@ -14,21 +14,22 @@ class ResultsPage(forms.ModelForm):
         fields = ('text','title')
 
 class BloodSampleForm(forms.ModelForm):
-    Reference_No = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control form-control-user",}))
-    Date_Time = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
-    Potassium = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
-    Sodium = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
-    Chloride = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
-    Urea= forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
-    Creatinine = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
-    T_Protein= forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
-    Albumin =  forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
-    Bilirubin  = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
-    AST  = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
-    ALP  = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
-    GGT = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
-    eGFR = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
-    Bicarbonate = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control form-control-user", }))
+    style = "form-control col-form-label row"
+    '''Reference_No = forms.CharField(widget=forms.TextInput(attrs={'class':style,}))
+    Date_Time = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    Potassium = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    Sodium = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    Chloride = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    Urea= forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    Creatinine = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    T_Protein= forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    Albumin =  forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    Bilirubin  = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    AST  = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    ALP  = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    GGT = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    eGFR = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    Bicarbonate = forms.CharField(widget=forms.TextInput(attrs={'class': style, })) '''
 
     class Meta:
         model = BloodSamples
