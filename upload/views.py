@@ -111,8 +111,14 @@ def upload_DB(request):
 list_of_files = []
 list_of_dict= []
 def upload_file(request):
-    print("Button pressed line 92")
+    print("Button pressed line 92",request.POST)
 
+    if request.POST.get("upload_to_DB"):
+        context = request.POST
+        mydict = context.dict()
+
+        args = {'button': list_of_files, 'form': returnform(mydict)}
+        return render(request, 'Testing/display_table.html', args)
 
     #if request.method == 'POST':
     if request.POST.get("upload"):
