@@ -22,7 +22,6 @@ class Post(models.Model):
 class BloodSamples(models.Model):
     #author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     Reference_No = models.CharField(max_length=100)
-    LabNo = models.CharField(max_length=200)
     Sodium = models.CharField(max_length=200)
     Potassium = models.CharField(max_length=200)
     Chloride = models.CharField(max_length=200)

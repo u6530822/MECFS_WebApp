@@ -1,16 +1,15 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
-from upload.models import Post
+from django.http import HttpResponse
 from .forms import *
 from django.utils import timezone
 from django.shortcuts import redirect
-from PIL import Image
 from .ImageToText import  *
-from django.urls import reverse
-from urllib.parse import urlencode
-import pytesseract
+import DBAccessKey
+from .LoginCheck import *
 
 # Create your views here.
+access_key_id_global=DBAccessKey.DBAccessKey.access_key_id_global
+secret_access_key_global=DBAccessKey.DBAccessKey.secret_access_key_global
 
 def index(request):
     return HttpResponse("<h1>Upload page</h1>")
@@ -112,8 +111,14 @@ def upload_DB(request):
 list_of_files = []
 list_of_dict= []
 def upload_file(request):
-    print("Button pressed line 92")
+    print("Button pressed line 92",request.POST)
 
+    if request.POST.get("upload_to_DB"):
+        context = request.POST
+        mydict = context.dict()
+
+        args = {'button': list_of_files, 'form': returnform(mydict)}
+        return render(request, 'Testing/display_table.html', args)
 
     #if request.method == 'POST':
     if request.POST.get("upload"):
@@ -167,15 +172,16 @@ def returnform(dictionary):
     return BloodSample
 
 def login(request):
-    print("Button pressed line 125")
 
     if request.method == "POST":
         form = LoginForm(request.POST)
         loginpost = form.save(commit=False)
-        print("Button pressed line 127:",request.POST)
-        if(loginpost.username=='mecfs' and loginpost.password=='mecfs'):
+
+        login_checker = LoginCheck(loginpost.username, loginpost.password)
+        if login_checker.check_login():
             print("Correct password")
             return redirect(upload_file)
+
     else:
         form = LoginForm()
     return render(request, 'Testing/login.html',{'form':form})
