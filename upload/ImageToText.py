@@ -71,7 +71,7 @@ class ImageToText:
         global Collected_Date_time
 
         result_dict = {
-            "filename": self.name.name
+            "File_name": self.name.name
         }
 
         # TODO: Improve logic of looping to reduce processing time

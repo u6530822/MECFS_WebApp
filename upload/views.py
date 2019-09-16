@@ -117,6 +117,10 @@ def upload_file(request):
         context = request.POST
         mydict = context.dict()
 
+        list_of_files.remove(request.POST.get("File_name"))
+        if len(list_of_files) == 0:
+            return render(request, 'Testing/upload.html')
+
         args = {'button': list_of_files, 'form': returnform(mydict)}
         return render(request, 'Testing/display_table.html', args)
 
@@ -139,12 +143,13 @@ def upload_file(request):
     for file in list_of_files:
         if request.POST.get(file):
             for dict in list_of_dict:
-                print("This is dict filename:",type(dict[0]), dict,"-->",dict[0]["filename"],"<--")
-                filename = dict[0].get("filename")
-                print("Files in list of files line 148:", file,"<--",dict[0]["filename"] == file)
+                print("This is dict filename:",type(dict[0]), dict,"-->",dict[0]["File_name"],"<--")
+                filename = dict[0].get("File_name")
+                print("Files in list of files line 148:", file,"<--",dict[0]["File_name"] == file)
                 #if file in dict[0]["filename"]:
-                if dict[0]["filename"] == file:
+                if dict[0]["File_name"] == file:
                     args = {'button': list_of_files, 'form': returnform(dict[0])}
+
                     return render(request, 'Testing/display_table.html', args)
 
         ## save entries in sql and then encode the url with the primary key
