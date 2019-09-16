@@ -139,7 +139,6 @@
                                             let reader = new FileReader()
                                             reader.readAsText(file)
                                             reader.onloadend = function () {
-
                                                 let file_button = document.createElement("button");
                                                 file_button.innerHTML = file.name;                   // Insert text
                                                 {#let file_srt_id = file_id.toString();#}
@@ -147,7 +146,6 @@
                                                 {#file_button.onClick = "deleteFile(this.id)";#}
                                                 document.getElementById('gallery').appendChild(file_button);               // Append <button> to <body>
                                                 file_id += 1;
-
                                             }
                                         }
                                     })
@@ -160,16 +158,29 @@
 
                                 function deleteFile(e) {
                                     alert("Confirm Delete " + e.target.innerHTML.toString() + " ?");
-                                    let elected_id = e.target.id.toString();
+                                    let selected_id = e.target.id.toString();
 
                                     let d = document.getElementById("gallery");
-                                    let d_nested = document.getElementById(elected_id);
+                                    let d_nested = document.getElementById(selected_id);
                                     d.removeChild(d_nested);
-                                    document.getElementById('drop-area').files.splice(0,1);
-                                    document.getElementById('submit-file').files.splice(0,1);
-                                }
-                                document.getElementById('gallery').getElementById("0").oncontextmenu = function() {
-                                    alert('right click!')
+
+                                    {#let new_file_list = document.getElementById('submit-file').files;#}
+
+                                    var newFileArray = Array.from(document.getElementById('submit-file').files);
+                                    newFileArray.splice(parseInt(selected_id), 1);
+
+                                    
+                                    let new_file_list = new DataTransfer();
+                                    var i;
+                                    for (i = 0; i < newFileArray.length; i++) {
+                                        new_file_list.items.add(newFileArray[i]);
+                                        alert("here");
+                                    }
+                                    alert(new_file_list.files.length);
+
+                                    document.getElementById('submit-file').files = new_file_list;
+                                    alert(document.getElementById('submit-file').files.length);
+
                                 }
 
                             </script>
