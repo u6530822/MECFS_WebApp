@@ -89,7 +89,7 @@
                                 window.addEventListener('dragover', stop, false)
                                 window.addEventListener('drop', stop, false)
                                 dropArea.addEventListener('drop', onDrop, false)
-                                window.addEventListener('click', deleteFile, false)
+                                gl.addEventListener('click', deleteFile, false)
 
                                 function highlight(e) {
                                     dropArea.classList.add('highlight')
@@ -144,7 +144,7 @@
                                                 file_button.innerHTML = file.name;                   // Insert text
                                                 {#let file_srt_id = file_id.toString();#}
                                                 file_button.id = file_id.toString();
-                                                file_button.onClick = "reply_click(this.id)";
+                                                {#file_button.onClick = "deleteFile(this.id)";#}
                                                 document.getElementById('gallery').appendChild(file_button);               // Append <button> to <body>
                                                 file_id += 1;
 
@@ -159,11 +159,17 @@
                                 }
 
                                 function deleteFile(e) {
-                                    console.log("here")
+                                    alert("Confirm Delete " + e.target.innerHTML.toString() + " ?");
+                                    let elected_id = e.target.id.toString();
+
                                     let d = document.getElementById("gallery");
-                                    let d_nested = document.getElementById("0");
+                                    let d_nested = document.getElementById(elected_id);
                                     d.removeChild(d_nested);
-                                    document.getElementById('submit-file').files.pop();
+                                    document.getElementById('drop-area').files.splice(0,1);
+                                    document.getElementById('submit-file').files.splice(0,1);
+                                }
+                                document.getElementById('gallery').getElementById("0").oncontextmenu = function() {
+                                    alert('right click!')
                                 }
 
                             </script>
