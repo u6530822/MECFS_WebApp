@@ -118,13 +118,19 @@ def upload_file(request):
         mydict = context.dict()
 
         list_of_files.remove(request.POST.get("File_name"))
+
         if len(list_of_files) == 0:
             return render(request, 'Testing/upload.html')
+
+        #show the next file that is pending to be uploaded
+        for dict in list_of_dict:
+            if dict[0]["File_name"] == list_of_files[0]:
+                args = {'button': list_of_files, 'form': returnform(dict[0])}
+                return render(request, 'Testing/display_table.html', args)
 
         args = {'button': list_of_files, 'form': returnform(mydict)}
         return render(request, 'Testing/display_table.html', args)
 
-    #if request.method == 'POST':
     if request.POST.get("upload"):
         list_of_dict.clear()
         list_of_files.clear()
@@ -133,7 +139,7 @@ def upload_file(request):
         for file in uploaded_file:
             print("This is uploaded file name:", file.name, " file size:",file.size)
             list_of_files.append(file.name)
-            object_img2txt = ImageToText(file)   #TODO: temporarily put it here, untill we could figure a way to manage multiple files in forms
+            object_img2txt = ImageToText(file)
             object_img2txt_output = object_img2txt.ReturnObject()
             list_of_dict.append(object_img2txt_output)
 
@@ -143,10 +149,7 @@ def upload_file(request):
     for file in list_of_files:
         if request.POST.get(file):
             for dict in list_of_dict:
-                print("This is dict filename:",type(dict[0]), dict,"-->",dict[0]["File_name"],"<--")
                 filename = dict[0].get("File_name")
-                print("Files in list of files line 148:", file,"<--",dict[0]["File_name"] == file)
-                #if file in dict[0]["filename"]:
                 if dict[0]["File_name"] == file:
                     args = {'button': list_of_files, 'form': returnform(dict[0])}
 
