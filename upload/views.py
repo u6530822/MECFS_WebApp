@@ -111,7 +111,7 @@ def upload_DB(request):
 list_of_files = []
 list_of_dict= []
 def upload_file(request):
-    print("Button pressed line 92",request.POST)
+    print("Button pressed line 92", request.POST)
 
     if request.POST.get("upload_to_DB"):
         context = request.POST
@@ -136,6 +136,19 @@ def upload_file(request):
         list_of_files.clear()
 
         uploaded_file= request.FILES.getlist('document')
+
+        btn_value = request.POST.get("upload", "")
+        count = 0
+
+        if btn_value != 'upload':
+            for del_id in btn_value:
+                if del_id != ',':
+                    print(del_id)
+                    delete_idx = int(del_id) - count
+                    uploaded_file.pop(delete_idx)
+                    count += 1
+
+
         for file in uploaded_file:
             print("This is uploaded file name:", file.name, " file size:",file.size)
             list_of_files.append(file.name)
