@@ -1,16 +1,15 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
-from upload.models import Post
+from django.http import HttpResponse
 from .forms import *
 from django.utils import timezone
 from django.shortcuts import redirect
-from PIL import Image
 from .ImageToText import  *
-from django.urls import reverse
-from urllib.parse import urlencode
-import pytesseract
+import DBAccessKey
+from .LoginCheck import *
 
 # Create your views here.
+access_key_id_global=DBAccessKey.DBAccessKey.access_key_id_global
+secret_access_key_global=DBAccessKey.DBAccessKey.secret_access_key_global
 
 def index(request):
     return HttpResponse("<h1>Upload page</h1>")
@@ -114,8 +113,24 @@ list_of_dict= []
 def upload_file(request):
     print("Button pressed line 92", request.POST)
 
+    if request.POST.get("upload_to_DB"):
+        context = request.POST
+        mydict = context.dict()
 
-    #if request.method == 'POST':
+        list_of_files.remove(request.POST.get("File_name"))
+
+        if len(list_of_files) == 0:
+            return render(request, 'Testing/upload.html')
+
+        #show the next file that is pending to be uploaded
+        for dict in list_of_dict:
+            if dict[0]["File_name"] == list_of_files[0]:
+                args = {'button': list_of_files, 'form': returnform(dict[0])}
+                return render(request, 'Testing/display_table.html', args)
+
+        args = {'button': list_of_files, 'form': returnform(mydict)}
+        return render(request, 'Testing/display_table.html', args)
+
     if request.POST.get("upload"):
         list_of_dict.clear()
         list_of_files.clear()
@@ -137,7 +152,7 @@ def upload_file(request):
         for file in uploaded_file:
             print("This is uploaded file name:", file.name, " file size:",file.size)
             list_of_files.append(file.name)
-            object_img2txt = ImageToText(file)   #TODO: temporarily put it here, untill we could figure a way to manage multiple files in forms
+            object_img2txt = ImageToText(file)
             object_img2txt_output = object_img2txt.ReturnObject()
             list_of_dict.append(object_img2txt_output)
 
@@ -147,12 +162,10 @@ def upload_file(request):
     for file in list_of_files:
         if request.POST.get(file):
             for dict in list_of_dict:
-                print("This is dict filename:",type(dict[0]), dict,"-->",dict[0]["filename"],"<--")
-                filename = dict[0].get("filename")
-                print("Files in list of files line 148:", file,"<--",dict[0]["filename"] == file)
-                #if file in dict[0]["filename"]:
-                if dict[0]["filename"] == file:
+                filename = dict[0].get("File_name")
+                if dict[0]["File_name"] == file:
                     args = {'button': list_of_files, 'form': returnform(dict[0])}
+
                     return render(request, 'Testing/display_table.html', args)
 
         ## save entries in sql and then encode the url with the primary key
@@ -180,15 +193,16 @@ def returnform(dictionary):
     return BloodSample
 
 def login(request):
-    print("Button pressed line 125")
 
     if request.method == "POST":
         form = LoginForm(request.POST)
         loginpost = form.save(commit=False)
-        print("Button pressed line 127:",request.POST)
-        if(loginpost.username=='mecfs' and loginpost.password=='mecfs'):
+
+        login_checker = LoginCheck(loginpost.username, loginpost.password)
+        if login_checker.check_login():
             print("Correct password")
             return redirect(upload_file)
+
     else:
         form = LoginForm()
     return render(request, 'Testing/login.html',{'form':form})

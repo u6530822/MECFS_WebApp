@@ -21,8 +21,8 @@ class Post(models.Model):
 
 class BloodSamples(models.Model):
     #author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    File_name = models.CharField(max_length=200)
     Reference_No = models.CharField(max_length=100)
-    LabNo = models.CharField(max_length=200)
     Sodium = models.CharField(max_length=200)
     Potassium = models.CharField(max_length=200)
     Chloride = models.CharField(max_length=200)
@@ -38,6 +38,7 @@ class BloodSamples(models.Model):
     eGFR = models.CharField(max_length=200)
     Bicarbonate = models.CharField(max_length=200)
 
+
     def publish(self):
         self.published_date = timezone.now()
         self.save()
@@ -47,6 +48,7 @@ class BloodSamples(models.Model):
 
 class BloodSamples2(models.Model):
     #author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    File_name = models.CharField(max_length=200)
     Reference_No = models.CharField(max_length=200)
     Date_Time= models.CharField(max_length=200)
     HAEMOGLOBIN = models.CharField(max_length=200)
@@ -65,6 +67,7 @@ class BloodSamples2(models.Model):
     PLATELETS = models.CharField(max_length=200)
     ESR = models.CharField(max_length=200)
 
+
     def publish(self):
         self.published_date = timezone.now()
         self.save()
@@ -74,9 +77,11 @@ class BloodSamples2(models.Model):
 
 class BloodSamples3(models.Model):
     #author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    File_name = models.CharField(max_length=200)
     Reference_No = models.CharField(max_length=200)
     Date_Time= models.CharField(max_length=200)
     Parathyroid_Hormone= models.CharField(max_length=200)
+
 
     def publish(self):
         self.published_date = timezone.now()
@@ -87,6 +92,7 @@ class BloodSamples3(models.Model):
 
 class BloodSamples4(models.Model):
     #author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    File_name = models.CharField(max_length=200)
     Reference_No = models.CharField(max_length=200)
     Date_Time= models.CharField(max_length=200)
     Vitamin_D= models.CharField(max_length=200)
