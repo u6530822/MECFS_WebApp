@@ -42,22 +42,22 @@ class BloodSampleForm2(forms.ModelForm):
     style = ""
     Reference_No = forms.CharField(widget=forms.TextInput(attrs={'class':style,}))
     Date_Time = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
-    HAEMOGLOBIN = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),required=False)
-    RBC = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),required=False)
-    PCV = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),required=False)
-    MCV= forms.CharField(widget=forms.TextInput(attrs={'class': style, }),required=False)
-    MCH = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),required=False)
-    MCHC= forms.CharField(widget=forms.TextInput(attrs={'class': style, }),required=False)
-    RDW =  forms.CharField(widget=forms.TextInput(attrs={'class': style, }),required=False)
-    WCC  = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),required=False)
-    Neutrophils  = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),required=False)
-    Lymphocytes  = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),required=False)
-    Monocytes = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),required=False)
-    Eosinophils = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),required=False)
-    Basophils = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),required=False)
-    PLATELETS = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),required=False)
-    ESR = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),required=False)
-    File_name = forms.CharField(widget=forms.TextInput(attrs={'class': style, }), required=False)
+    HAEMOGLOBIN = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    RBC = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    PCV = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    MCV= forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    MCH = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    MCHC= forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    RDW =  forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    WCC  = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    Neutrophils  = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    Lymphocytes  = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    Monocytes = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    Eosinophils = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    Basophils = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    PLATELETS = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    ESR = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    File_name = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
 
     class Meta:
         model = BloodSamples2
@@ -67,8 +67,8 @@ class BloodSampleForm3(forms.ModelForm):
     style = ""
     Reference_No = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
     Date_Time = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
-    Parathyroid_Hormone = forms.CharField(widget=forms.TextInput(attrs={'class': style, }), required=False)
-    File_name = forms.CharField(widget=forms.TextInput(attrs={'class': style, }), required=False)
+    Parathyroid_Hormone = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    File_name = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
 
     class Meta:
         model = BloodSamples3
@@ -78,8 +78,8 @@ class BloodSampleForm4(forms.ModelForm):
     style = ""
     Reference_No = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
     Date_Time = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
-    Vitamin_D = forms.CharField(widget=forms.TextInput(attrs={'class': style, }), required=False)
-    File_name = forms.CharField(widget=forms.TextInput(attrs={'class': style, }), required=False)
+    Vitamin_D = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
+    File_name = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
 
     class Meta:
         model = BloodSamples4

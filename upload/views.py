@@ -117,6 +117,9 @@ def upload_file(request):
         context = request.POST
         mydict = context.dict()
 
+        # put the upload to db here
+        upload_to_db(mydict)
+
         list_of_files.remove(request.POST.get("File_name"))
 
         if len(list_of_files) == 0:
@@ -221,3 +224,75 @@ def display_table(request):
 
     args = {'button': button,'form':form}
     return render(request, 'Testing/display_table.html', args)
+
+
+def check_entry_exist(ref_no):
+    database = boto3.resource('dynamodb', region_name='ap-southeast-2', aws_access_key_id=access_key_id_global,
+                                  aws_secret_access_key=secret_access_key_global)
+    table = database.Table('ME_CFS_DB')
+    response = table.query(
+            KeyConditionExpression=Key('Reference_No').eq(ref_no)
+        )
+    if response['Items']:
+        return True
+    else:
+        return False
+
+def write_to_db(ref_no, date_time):
+    # Read from DB to see if it exist, if it does do not create a new one.
+    database = boto3.resource('dynamodb', region_name='ap-southeast-2', aws_access_key_id=access_key_id_global,
+                              aws_secret_access_key=secret_access_key_global)
+    table = database.Table('ME_CFS_DB')
+
+    response = table.put_item(
+       Item={
+                'Reference_No': ref_no,
+                'Date_Time': int(date_time),
+            }
+    )
+
+
+def update_db(name, value, ref_no, collected_date_time):
+    # check existing or not
+    # update the existing record
+
+    dynamodb = boto3.resource('dynamodb', region_name='ap-southeast-2', aws_access_key_id=access_key_id_global,
+                               aws_secret_access_key=secret_access_key_global)
+    table = dynamodb.Table('ME_CFS_DB')
+    Expression_string="set "+name+ "= :r";
+    response = table.update_item(
+         Key={
+              'Reference_No': ref_no,
+              'Date_Time': int(collected_date_time),
+            },
+         UpdateExpression=Expression_string,
+         ExpressionAttributeValues={
+            ':r': value,
+         },
+         ReturnValues="UPDATED_NEW"
+    )
+
+def upload_to_db(dictionary):
+    print("This is to be uploaded, ", dictionary)
+    boolean_val = check_entry_exist(dictionary['Reference_No'])
+    print("if that entry already exist:", boolean_val)
+    if (boolean_val):
+        print("Update it")
+        # update it only
+        for val in dictionary:
+            if (val != 'Reference_No' and val != 'Date_Time' and val != 'upload_to_DB' and val != 'csrfmiddlewaretoken' and val!= 'File_name'):
+                print("Resuld_dict:", val, " value:", dictionary[val])
+                val1 = val.replace('.', '_')
+                update_db(val1, dictionary[val], dictionary['Reference_No'],
+                                                  dictionary['Date_Time'])
+
+    else:
+        print("Create it")
+        # create it and update it
+        write_to_db(dictionary['Reference_No'], dictionary['Date_Time'])
+        for val in dictionary:
+            if (val != 'Reference_No' and val != 'Date_Time' and val != 'upload_to_DB' and val != 'csrfmiddlewaretoken' and val!= 'File_name'):
+                print("Resuld_dict:", val, " value:", dictionary[val])
+                val1 = val.replace('.', '_')
+                update_db(val1, dictionary[val], dictionary['Reference_No'],
+                                                  dictionary['Date_Time'])
