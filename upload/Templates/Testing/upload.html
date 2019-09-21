@@ -57,8 +57,8 @@
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <input id="submit-file" type="file" name="document" accept="image/png, image/jpeg"
-                           multiple style="display: none"/>
-{#                    style="display: none"#}
+                           multiple/>
+                    {#                    style="display: none"#}
                     <button type="submit" name="upload" value="upload" id="submit-button" class="save btn btn-default">
                         Upload file
                     </button>
@@ -75,7 +75,8 @@
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card h-100">
                             <div id="drop-area" class="drop-area" enctype="multipart/form-data">
-                                <p>Drag file here or click to select</p>
+                                <p>Drag file here </p>
+
                                 <div id="gallery"></div>
                             </div>
 
@@ -84,7 +85,9 @@
                             <script type="text/javascript">
                                 let dropArea = document.getElementById('drop-area')
                                 let gl = document.getElementById('gallery')
+                                let file_btn = document.getElementById('submit-file')
                                 var delete_file_idx = []
+
                                 dropArea.addEventListener('dragenter', highlight, false)
                                 dropArea.addEventListener('dragover', highlight, false)
                                 dropArea.addEventListener('dragleave', unHighlight, false)
@@ -93,6 +96,7 @@
                                 window.addEventListener('drop', stop, false)
                                 dropArea.addEventListener('drop', onDrop, false)
                                 gl.addEventListener('click', deleteFile, false)
+                                file_btn.addEventListener('change', displaySelectedFile, false)
 
                                 function highlight(e) {
                                     dropArea.classList.add('highlight')
@@ -118,6 +122,27 @@
                                     {#previewFile(files)#}
                                     e.preventDefault();
                                     displayFileName(name, files)
+                                }
+
+                                function displaySelectedFile(e) {
+                                    {#remove display file of previously selected by button#}
+                                    let d = document.getElementById("gallery");
+                                    if(d.childElementCount!=0){
+                                        alert("here")
+                                        while (d.firstChild) {
+                                            d.removeChild(d.firstChild);
+                                        }
+                                    }
+
+                                    let dt = e.target
+                                    let name = e.target.name
+                                    let files = dt.files
+                                    {#previewFile(files)#}
+                                    e.preventDefault();
+
+                                    if(dropArea.files == NULL){
+                                        displayFileName(name, files)
+                                    }
                                 }
 
 
@@ -169,7 +194,7 @@
 
                                         delete_file_idx.push(selected_id);
                                         document.getElementById("submit-button").value = delete_file_idx;
-                                        if(d.childElementCount === 0){
+                                        if (d.childElementCount === 0) {
                                             history.go(0)
                                         }
 
