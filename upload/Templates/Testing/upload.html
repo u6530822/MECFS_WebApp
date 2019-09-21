@@ -36,15 +36,15 @@
 
     <body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <!-- Navigation(commented out for first release-->
+    <!--nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                     aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
         </div>
-    </nav>
+    </nav-->
 
     <!-- Page Content -->
     <div class="container">
@@ -58,8 +58,11 @@
                     {% csrf_token %}
                     <input id="submit-file" type="file" name="document" accept="image/png, image/jpeg"
                            multiple style="display: none"/>
-                    <button type="submit" name="upload" value="upload" class="save btn btn-default"> Upload file</button>
-{#                    <button type="submit"> Upload file</button>#}
+{#                    style="display: none"#}
+                    <button type="submit" name="upload" value="upload" id="submit-button" class="save btn btn-default">
+                        Upload file
+                    </button>
+                    {#                    <button type="submit"> Upload file</button>#}
                 </form>
             </div>
 
@@ -71,14 +74,8 @@
 
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card h-100">
-                            {#              <a href="#"><img class="card-img-top" src="http://placehold.it/400x500" alt=""></a>#}
-
-                            {#                upload dropbox #}
-
-
-                            <div id="drop-area" class="drop-area" method="post" enctype="multipart/form-data">
-                                <p>Drag file here</p>
-                                {% csrf_token %}
+                            <div id="drop-area" class="drop-area" enctype="multipart/form-data">
+                                <p>Drag file here or click to select</p>
                                 <div id="gallery"></div>
                             </div>
 
@@ -86,6 +83,8 @@
                             <script src="http://apps.bdimg.com/libs/jquery/1.8.3/jquery.min.js"></script>
                             <script type="text/javascript">
                                 let dropArea = document.getElementById('drop-area')
+                                let gl = document.getElementById('gallery')
+                                var delete_file_idx = []
                                 dropArea.addEventListener('dragenter', highlight, false)
                                 dropArea.addEventListener('dragover', highlight, false)
                                 dropArea.addEventListener('dragleave', unHighlight, false)
@@ -93,6 +92,7 @@
                                 window.addEventListener('dragover', stop, false)
                                 window.addEventListener('drop', stop, false)
                                 dropArea.addEventListener('drop', onDrop, false)
+                                gl.addEventListener('click', deleteFile, false)
 
                                 function highlight(e) {
                                     dropArea.classList.add('highlight')
@@ -120,6 +120,7 @@
                                     displayFileName(name, files)
                                 }
 
+
                                 function previewFile(files) {
                                     [...files].forEach((file) => {
                                         if (file.type.includes('image')) {
@@ -135,19 +136,60 @@
                                 }
 
                                 function displayFileName(name, files) {
-                                    {#let filename = document.createTextNode(files[0].name);         // Create a text node#}
-                                    {#document.getElementById('gallery').appendChild(filename);#}
+                                    let file_id = 0;
                                     [...files].forEach((file) => {
                                         if (file.type.includes('image')) {
                                             let reader = new FileReader()
                                             reader.readAsText(file)
                                             reader.onloadend = function () {
-                                                let textnode = document.createTextNode(file.name + '\n');         // Create a text node
-                                                document.getElementById('gallery').appendChild(textnode)
+                                                let file_button = document.createElement("button");
+                                                file_button.innerHTML = file.name;                   // Insert text
+                                                file_button.id = file_id.toString();
+                                                document.getElementById('gallery').appendChild(file_button);               // Append <button> to <body>
+                                                file_id += 1;
                                             }
                                         }
                                     })
                                     document.getElementById('submit-file').files = files;
+                                    {#document.getElementById('submit-file').files.push(files);#}
+
+                                }
+
+                                function reply_click(clicked_id) {
+                                    alert(clicked_id);
+                                }
+
+                                function deleteFile(e) {
+                                    var delete_or_not = confirm("Confirm Delete " + e.target.innerHTML.toString() + " ?");
+                                    if (delete_or_not == true) {
+                                        let selected_id = e.target.id.toString();
+                                        let d = document.getElementById("gallery");
+                                        let d_nested = document.getElementById(selected_id);
+                                        d.removeChild(d_nested);
+
+                                        delete_file_idx.push(selected_id);
+                                        document.getElementById("submit-button").value = delete_file_idx;
+                                        if(d.childElementCount === 0){
+                                            history.go(0)
+                                        }
+
+
+                                    } else {
+
+                                    }
+
+                                    {#let new_file_list = document.getElementById('submit-file').files;#}
+
+                                    {#var newFileArray = Array.from(document.getElementById('submit-file').files);#}
+                                    {#newFileArray.splice(parseInt(selected_id), 1);#}
+
+                                    //assign selected id to the name of submit button
+                                    {#var dataTrans = new DataTransfer()#}
+                                    {#document.getElementById('submit-file').files.push(newFileArray[0]);#}
+
+
+                                    {#alert(document.getElementById('submit-file').files.length);#}
+
                                 }
 
                             </script>
