@@ -1,0 +1,21 @@
+{% extends 'Testing/base.html' %}
+
+{% block content %}
+
+<html>
+<head>
+    <title>Search</title>
+</head>
+<body>
+<form method="POST" class="post-form">{% csrf_token %}
+<form class="form-inline">
+<div class="form-group mx-sm-3 mb-2">
+    {{ Search.as_ul}}
+</div>
+    <button type="submit" name="search" value="search" class="save btn btn-default mb-2">Search</button>
+
+</form>
+</form>
+</body>
+</html>
+{% endblock %}
