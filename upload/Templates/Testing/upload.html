@@ -62,6 +62,7 @@
                     <button type="submit" name="upload" value="upload" id="submit-button" class="save btn btn-default">
                         Upload file
                     </button>
+
                     {#                    <button type="submit"> Upload file</button>#}
                 </form>
             </div>
@@ -121,14 +122,15 @@
                                     let files = dt.files
                                     {#previewFile(files)#}
                                     e.preventDefault();
-                                    displayFileName(name, files)
+                                    {#displayFileNamebyDrop(name, files)#}
+                                    document.getElementById('submit-file').files = files;
                                 }
 
                                 function displaySelectedFile(e) {
                                     {#remove display file of previously selected by button#}
                                     let d = document.getElementById("gallery");
-                                    if(d.childElementCount!=0){
-                                        alert("here")
+                                    if (d.childElementCount != 0) {
+                                        {#alert("here")#}
                                         while (d.firstChild) {
                                             d.removeChild(d.firstChild);
                                         }
@@ -139,8 +141,10 @@
                                     let files = dt.files
                                     {#previewFile(files)#}
                                     e.preventDefault();
+                                    displayFileName(name, files)
+                                    {#alert()#}
 
-                                    if(dropArea.files == NULL){
+                                    if (window.files.length == 0) {
                                         displayFileName(name, files)
                                     }
                                 }
@@ -176,9 +180,8 @@
                                         }
                                     })
                                     document.getElementById('submit-file').files = files;
-                                    {#document.getElementById('submit-file').files.push(files);#}
-
                                 }
+                                
 
                                 function reply_click(clicked_id) {
                                     alert(clicked_id);
