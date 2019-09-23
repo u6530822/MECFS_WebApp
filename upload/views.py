@@ -150,7 +150,9 @@ def upload_file(request):
         list_of_dict.clear()
         list_of_files.clear()
 
+
         uploaded_file = request.FILES.getlist('document')
+
 
         btn_value = request.POST.get("upload", "")
         count = 0
