@@ -122,8 +122,8 @@
                                     let files = dt.files
                                     {#previewFile(files)#}
                                     e.preventDefault();
-                                    {#displayFileNamebyDrop(name, files)#}
-                                    document.getElementById('submit-file').files = files;
+                                    displayFileName(name, files)
+                                    {#document.getElementById('submit-file').files = files;#}
                                 }
 
                                 function displaySelectedFile(e) {
@@ -181,7 +181,7 @@
                                     })
                                     document.getElementById('submit-file').files = files;
                                 }
-                                
+
 
                                 function reply_click(clicked_id) {
                                     alert(clicked_id);
