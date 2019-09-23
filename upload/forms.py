@@ -97,6 +97,14 @@ class LoginForm(forms.ModelForm):
 
         fields = ('username','password')
 
+class Search(forms.ModelForm):
+    search = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+
+    class Meta:
+        model = Search
+
+        fields = ('search',)
+
 class null(forms.ModelForm):
     class Meta:
         model = BloodSamples2
