@@ -15,6 +15,7 @@ urlpatterns = [
     path('upload_DB',views.upload_DB,name='upload_DB'),
     path('login', views.login, name='login'),
     path('display_table', views.display_table, name='display_table'),
+    path('search', views.search, name='search'),
 
 
 ]

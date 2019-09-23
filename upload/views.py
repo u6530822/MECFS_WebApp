@@ -239,6 +239,12 @@ def display_table(request):
     args = {'button': button, 'form': form}
     return render(request, 'Testing/display_table.html', args)
 
+def search(request):
+
+    search= Search()
+
+    args = {'Search': search}
+    return render(request, 'Testing/search.html',args)
 
 
 def check_entry_exist(ref_no):
