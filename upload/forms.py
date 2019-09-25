@@ -15,6 +15,7 @@ class ResultsPage(forms.ModelForm):
 
 class BloodSampleForm(forms.ModelForm):
     #style = "form-control col-form-label row"
+    # making all fields mandatory else it wont be able to pushed it up to DB
     style = ""
     Reference_No = forms.CharField(widget=forms.TextInput(attrs={'class':style,}))
     Date_Time = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
@@ -39,6 +40,7 @@ class BloodSampleForm(forms.ModelForm):
 
 class BloodSampleForm2(forms.ModelForm):
     #style = "form-control col-form-label row"
+    #making all fields mandatory else it wont be able to pushed it up to DB
     style = ""
     Reference_No = forms.CharField(widget=forms.TextInput(attrs={'class':style,}))
     Date_Time = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
@@ -64,6 +66,7 @@ class BloodSampleForm2(forms.ModelForm):
         fields = ('File_name','Reference_No','HAEMOGLOBIN','Date_Time','RBC','PCV','MCV', 'MCH', 'MCHC','RDW','WCC','Neutrophils','Lymphocytes','Monocytes','Eosinophils','Basophils','PLATELETS','ESR')
 
 class BloodSampleForm3(forms.ModelForm):
+    # making all fields mandatory else it wont be able to pushed it up to DB
     style = ""
     Reference_No = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
     Date_Time = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
@@ -75,6 +78,7 @@ class BloodSampleForm3(forms.ModelForm):
         fields = ('File_name','Reference_No','Date_Time','Parathyroid_Hormone')
 
 class BloodSampleForm4(forms.ModelForm):
+    # making all fields mandatory else it wont be able to pushed it up to DB
     style = ""
     Reference_No = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
     Date_Time = forms.CharField(widget=forms.TextInput(attrs={'class': style, }))
