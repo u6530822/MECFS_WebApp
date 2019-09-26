@@ -215,6 +215,8 @@ def returnform(dictionary):
 
 
 def login(request):
+    #need to login everytime u enter this page
+    update_Login_db('1')  # code for invalid
 
     if request.method == "POST":
         form = LoginForm(request.POST)
