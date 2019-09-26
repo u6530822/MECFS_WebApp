@@ -10,7 +10,7 @@ from .LoginCheck import *
 # Create your views here.
 access_key_id_global = DBAccessKey.DBAccessKey.access_key_id_global
 secret_access_key_global = DBAccessKey.DBAccessKey.secret_access_key_global
-global_login=0
+
 
 def index(request):
     return HttpResponse("<h1>Upload page</h1>")
@@ -123,74 +123,75 @@ list_of_dict = []
 
 
 def upload_file(request):
-    print("Button pressed line 92", request.POST)
+    login_checker = LoginCheck('Login', 'valid')
+    if login_checker.check_login():
+        if request.POST.get("upload_to_DB"):
+            context = request.POST
+            mydict = context.dict()
 
-    if request.POST.get("upload_to_DB"):
-        context = request.POST
-        mydict = context.dict()
+            # put the upload to db here
+            upload_to_db(mydict)
 
-        # put the upload to db here
-        upload_to_db(mydict)
+            list_of_files.remove(request.POST.get("File_name"))
 
-        list_of_files.remove(request.POST.get("File_name"))
+            if len(list_of_files) == 0:
+                return render(request, 'Testing/upload.html')
 
-        if len(list_of_files) == 0:
-            return render(request, 'Testing/upload.html')
-
-        # show the next file that is pending to be uploaded
-        for dict in list_of_dict:
-            if dict[0]["File_name"] == list_of_files[0]:
-                args = {'button': list_of_files, 'form': returnform(dict[0])}
-                return render(request, 'Testing/display_table.html', args)
-
-        args = {'button': list_of_files, 'form': returnform(mydict)}
-        return render(request, 'Testing/display_table.html', args)
-
-    if request.POST.get("upload"):
-        list_of_dict.clear()
-        list_of_files.clear()
-
-
-        uploaded_file = request.FILES.getlist('document')
-
-
-        btn_value = request.POST.get("upload", "")
-        count = 0
-
-        if btn_value != 'upload':
-            for del_id in btn_value:
-                if del_id != ',':
-                    print(del_id)
-                    delete_idx = int(del_id) - count
-                    uploaded_file.pop(delete_idx)
-                    count += 1
-
-        for file in uploaded_file:
-            print("This is uploaded file name:", file.name, " file size:", file.size)
-            list_of_files.append(file.name)
-            object_img2txt = ImageToText(file)
-            object_img2txt_output = object_img2txt.ReturnObject()
-            list_of_dict.append(object_img2txt_output)
-
-        args = {'button': list_of_files, 'form': returnform(object_img2txt_output[0])}
-        return render(request, 'Testing/display_table.html', args)
-
-    for file in list_of_files:
-        if request.POST.get(file):
+            # show the next file that is pending to be uploaded
             for dict in list_of_dict:
-                filename = dict[0].get("File_name")
-                if dict[0]["File_name"] == file:
+                if dict[0]["File_name"] == list_of_files[0]:
                     args = {'button': list_of_files, 'form': returnform(dict[0])}
-
                     return render(request, 'Testing/display_table.html', args)
 
-        ## save entries in sql and then encode the url with the primary key
-        # base_url = reverse('post_results')
-        # query_string = urlencode(object_img2txt_output[0])
-        # url = '{}?{}'.format(base_url, query_string)
-        # return redirect(url)
+            args = {'button': list_of_files, 'form': returnform(mydict)}
+            return render(request, 'Testing/display_table.html', args)
 
-    return render(request, 'Testing/upload.html')
+        if request.POST.get("upload"):
+            list_of_dict.clear()
+            list_of_files.clear()
+
+            uploaded_file = request.FILES.getlist('document')
+
+            btn_value = request.POST.get("upload", "")
+            count = 0
+
+            if btn_value != 'upload':
+                for del_id in btn_value:
+                    if del_id != ',':
+                        print(del_id)
+                        delete_idx = int(del_id) - count
+                        uploaded_file.pop(delete_idx)
+                        count += 1
+
+            for file in uploaded_file:
+                print("This is uploaded file name:", file.name, " file size:", file.size)
+                list_of_files.append(file.name)
+                object_img2txt = ImageToText(file)
+                object_img2txt_output = object_img2txt.ReturnObject()
+                list_of_dict.append(object_img2txt_output)
+
+            args = {'button': list_of_files, 'form': returnform(object_img2txt_output[0])}
+            return render(request, 'Testing/display_table.html', args)
+
+        for file in list_of_files:
+            if request.POST.get(file):
+                for dict in list_of_dict:
+                    filename = dict[0].get("File_name")
+                    if dict[0]["File_name"] == file:
+                        args = {'button': list_of_files, 'form': returnform(dict[0])}
+
+                        return render(request, 'Testing/display_table.html', args)
+
+            ## save entries in sql and then encode the url with the primary key
+            # base_url = reverse('post_results')
+            # query_string = urlencode(object_img2txt_output[0])
+            # url = '{}?{}'.format(base_url, query_string)
+            # return redirect(url)
+
+        return render(request, 'Testing/upload.html')
+    else:
+        return HttpResponse("<h1>No Login</h1>")
+
 
 
 def returnform(dictionary):
@@ -214,6 +215,7 @@ def returnform(dictionary):
 
 
 def login(request):
+
     if request.method == "POST":
         form = LoginForm(request.POST)
         loginpost = form.save(commit=False)
@@ -221,10 +223,10 @@ def login(request):
         login_checker = LoginCheck(loginpost.username, loginpost.password)
         if login_checker.check_login():
             print("Correct password")
-            global_login=1
+            update_Login_db('ff8858b7266f7d36585de94e854f4778') #code for valid
             return redirect(upload_file)
         else:
-            global_login = 0
+            update_Login_db('1') #code for invalid
             return HttpResponse("<h1>No Login</h1>")
 
     else:
@@ -248,11 +250,14 @@ def display_table(request):
     return render(request, 'Testing/display_table.html', args)
 
 def search(request):
+    login_checker = LoginCheck('Login', 'valid')
+    if login_checker.check_login():
+        search= Search()
+        args = {'Search': search}
+        return render(request, 'Testing/search.html',args)
+    else:
+        return HttpResponse("<h1>No Login</h1>")
 
-    search= Search()
-
-    args = {'Search': search}
-    return render(request, 'Testing/search.html',args)
 
 def noaccess(request):
 
@@ -297,6 +302,25 @@ def update_db(name, value, ref_no, collected_date_time):
          Key={
               'Reference_No': ref_no,
               'Date_Time': int(collected_date_time),
+            },
+         UpdateExpression=Expression_string,
+         ExpressionAttributeValues={
+            ':r': value,
+         },
+         ReturnValues="UPDATED_NEW"
+    )
+
+def update_Login_db(value):
+    # check existing or not
+    # update the existing record
+
+    dynamodb = boto3.resource('dynamodb', region_name='ap-southeast-2', aws_access_key_id=access_key_id_global,
+                               aws_secret_access_key=secret_access_key_global)
+    table = dynamodb.Table('security')
+    Expression_string="set Password = :r";
+    response = table.update_item(
+         Key={
+              'Username': 'Login',
             },
          UpdateExpression=Expression_string,
          ExpressionAttributeValues={
