@@ -10,7 +10,7 @@ from .LoginCheck import *
 # Create your views here.
 access_key_id_global = DBAccessKey.DBAccessKey.access_key_id_global
 secret_access_key_global = DBAccessKey.DBAccessKey.secret_access_key_global
-
+global_login=0
 
 def index(request):
     return HttpResponse("<h1>Upload page</h1>")
@@ -217,7 +217,11 @@ def login(request):
         login_checker = LoginCheck(loginpost.username, loginpost.password)
         if login_checker.check_login():
             print("Correct password")
+            global_login=1
             return redirect(upload_file)
+        else:
+            global_login = 0
+            return HttpResponse("<h1>No Login</h1>")
 
     else:
         form = LoginForm()
@@ -245,6 +249,10 @@ def search(request):
 
     args = {'Search': search}
     return render(request, 'Testing/search.html',args)
+
+def noaccess(request):
+
+    return HttpResponse("<h1>No Login</h1>")
 
 
 def check_entry_exist(ref_no):
