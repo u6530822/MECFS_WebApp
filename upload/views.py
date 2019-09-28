@@ -194,7 +194,11 @@ def upload_file(request):
 
 
 def returnform(dictionary):
+
     if "HAEMOGLOBIN" in dictionary:
+        BloodSample = BloodSampleForm2(initial=dictionary)
+
+    elif "Lymphocytes" in dictionary:
         BloodSample = BloodSampleForm2(initial=dictionary)
 
     elif "Potassium" in dictionary:
