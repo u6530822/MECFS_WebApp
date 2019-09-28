@@ -3,8 +3,6 @@
 {% block content %}
 
     <head>
-    <link rel="stylesheet" type="text/css" href="./loading.css"/>
-    <link rel="stylesheet" type="text/css" href="./loading-btn.css"/>
 
         <style>
 
@@ -40,6 +38,9 @@
 
         <!-- Custom styles for this template -->
         {#  <link href="css/sb-admin-2.min.css" rel="stylesheet">#}
+<link rel="stylesheet" type="text/css" href="//loading.io/css/loading.css"/>
+<link rel="stylesheet" type="text/css" href="//loading.io/css/loading-btn.css"/>
+
 
     </head>
 
@@ -86,14 +87,13 @@
                     <p> </p>
                     {#                    style="display: none"#}
                     <button type="submit" name="upload" value="upload" id="submit-button"
-                            class="save btn btn-default" style = "position: relative; top:300px">
-                        <i class="fa fa-circle-o-notch fa-spin"></i>
+                            class="btn btn-default ld-ext-right running" style = "position: relative; top:300px">
                         Convert file
+                        <div class="ld ld-ring ld-spin"></div>
+
                     </button>
-                    <div class="btn btn-default ld-ext-right running">
-                      My Button
-                      <div class="ld ld-ring ld-spin"></div>
-                    </div>
+
+
                     {#                    <button type="submit"> Upload file</button>#}
                 </form>
             </div>
