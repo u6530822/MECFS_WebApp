@@ -167,7 +167,7 @@ def upload_file(request):
                 print("This is uploaded file name:", file.name, " file size:", file.size)
                 list_of_files.append(file.name)
                 object_img2txt = ImageToText(file)
-                object_img2txt_output = object_img2txt.ReturnObject()
+                object_img2txt_output = object_img2txt.print_filename()
                 list_of_dict.append(object_img2txt_output)
 
             args = {'button': list_of_files, 'form': returnform(object_img2txt_output[0])}

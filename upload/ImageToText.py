@@ -1,6 +1,7 @@
 import pytesseract
 from PIL import Image
 import re
+from pdf2image import convert_from_path
 
 
 class ImageToText:
@@ -18,6 +19,7 @@ class ImageToText:
             text_local[val_local] = text_local[val_local].replace('Ref. Range', 'RefRange')
             text_local[val_local] = text_local[val_local].replace('Lab No.', 'LabNo')
 
+            #  TODO: Change all string first before extract value out rather than changing one line at a time
             if re.search('Vitamin D(.*?)[\s]', (text_local[val_local])):
                 text_local[val_local] = re.sub('Vitamin D(.*?)[\s]', 'VitaminD ', text_local[val_local])
             elif re.search('Vitamin D.*', (text_local[val_local])):
@@ -31,22 +33,27 @@ class ImageToText:
         if len(val_local1) > index + 1:
             # value after index is not actual value if the value starts with alphabet
             if val_local1[index + 1][0].isalpha():
-                # Check next line for value
+                # Check next line for value by splitting next line
                 val_local2 = text_local[val_local + 1].split()
+                print(val_local2)
+                print(index)
+                # Make sure line two has >= words as line one, make sure the index is numeric
                 if index < len(val_local2) and val_local2[index][0].isnumeric():
                     return val_local2[index]
                 # Case where symbol *,>,<
-                elif index < len(val_local2) and (
-                        val_local2[index] == '*' or val_local2[index] == '>' or val_local2[index] == '<') \
-                        and (val_local2[index + 1][0].isnumeric()):
+                elif index < len(val_local2) and (val_local2[index] == '*' or val_local2[index] == '>' or
+                                                  val_local2[index] == '<') and \
+                        (val_local2[index + 1][0].isnumeric()):
                     return val_local2[index + 1]
                 else:
+                    # print("N/A 1")
                     return "N/A"
             elif val_local1[index + 1] == '*' or val_local1[index + 1] == '>' or val_local1[index + 1] == '<':
                 return val_local1[index + 2]
             else:
                 return val_local1[index + 1]
-        else:
+        # check if next line has value
+        elif len(text_local) > val_local + 1:
             # Check next line for value
             val_local2 = text_local[val_local + 1].split()
             if val_local2[index][0].isnumeric():
@@ -56,22 +63,69 @@ class ImageToText:
                     and (val_local2[index + 1][0].isnumeric()):
                 return val_local2[index + 1]
             else:
+                # print("N/A 2")
                 return "N/A"
+        # if no next line return N/A
+        else:
+            # print("N/A 3")
+            return "N/A"
+
+    def print_filename(self):
+
+        # list of dictionary
+        file_dict = []
+        print(self.name)
+        print("clear once")
+        filename= self.name.name
+        file= self.name
+
+        print(type(filename))
+        # if it is pdf
+        if filename.lower().endswith('.pdf'):
+            # Store all the pages of the PDF in a variable
+            pages = convert_from_path(file, 300, thread_count=4, grayscale=True, transparent=True)
+
+            # Counter to store images of each page of PDF to image
+            image_counter = 1
+
+            # Iterate through all the pages stored above
+            for page in pages:
+                # Declaring filename for each page of PDF as png
+                filename = filename.replace(".pdf", "")
+                filename_png = filename + "_" + str(image_counter) + ".png"
+                # Save the image of the page in system
+                page.save(filename_png, 'PNG')
+                # Increment the counter to update filename
+                image_counter = image_counter + 1
+                # Convert image to text
+                dictionary = ImageToText.ReturnObject(self, self.name)
+                # Ignore empty pages (Since empty pages will always have the "filename" key,
+                # len 1 is treated as empty page)
+                if len(dictionary) != 1:
+                    file_dict.append(dictionary)
+
+        else:
+            dictionary = ImageToText.ReturnObject(self, self.name)
+            # Ignore empty pages (Since empty pages will always have the "filename" key,
+            # len 1 is treated as empty page)
+            if len(dictionary) != 1:
+                file_dict.append(dictionary)
+
+        # return list of dictionary
+        return file_dict
 
 
+    def ReturnObject(self,filename):
 
-    def ReturnObject(self):
-        list_of_dict = []
-        image = Image.open(self.name)
+        image = Image.open(filename)
         # Configure tesseract to treat each document line as a single line by setting --psm to 6
         text = pytesseract.image_to_string(image, lang="eng", config='--psm 6').splitlines()
-        print("line 64 in returnobject")
 
         global Ref_no
         global Collected_Date_time
 
         result_dict = {
-            "File_name": self.name.name
+            "File_name": filename.name
         }
 
         # TODO: Improve logic of looping to reduce processing time
@@ -111,7 +165,7 @@ class ImageToText:
             elif text[val]:
                 field_str_list = ['Sodium', 'Potassium', 'Chloride', 'Bicarbonate', 'Urea', 'Creatinine', 'eGFR',
                                   'T.Protein', 'Albumin', 'ALP', 'Bilirubin', 'GGT',
-                                  'AST', 'ALT', 'HAEMOGLOBIN', 'RBC', 'PCV', 'MCV', 'MCHC', 'RDW', 'WCC', 'Neutrophils',
+                                  'AST', 'ALT', 'HAEMOGLOBIN', 'RBC', 'PCV', 'MCV', 'MCHC', 'RDW', 'wcc', 'Neutrophils',
                                   'Lymphocytes', 'Monocytes',
                                   'Eosinophils', 'Basophils', 'PLATELETS', 'ESR']  # T.Protein
 
@@ -128,7 +182,8 @@ class ImageToText:
                     if mch != "N/A":
                         result_dict['MCH'] = mch
 
-        list_of_dict.append(result_dict)
-        return list_of_dict
+        # return dictionary
+        return result_dict
+
 
 
