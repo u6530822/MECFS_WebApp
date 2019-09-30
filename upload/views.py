@@ -259,15 +259,19 @@ def search(request):
             form = Search(request.POST)
             loginpost = form.save(commit=False)
 
+            #read from dyanmoDB
             database = boto3.resource('dynamodb', region_name='ap-southeast-2', aws_access_key_id=access_key_id_global,
                                       aws_secret_access_key=secret_access_key_global)
             table = database.Table('ME_CFS_DB')
+
+            #query table with reference number
             response = table.query(
                 KeyConditionExpression=Key('Reference_No').eq(loginpost.search)
             )
 
             if response['Items']:
                 for i in response['Items']:
+                    #initiate a form with initial values from values retrieved from DB
                     bloodform = RetrieveAllBlood(i)
 
             return render(request, 'Testing/search.html',{'bloodform': bloodform,'Search': search})
