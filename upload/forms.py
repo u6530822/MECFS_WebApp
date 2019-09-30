@@ -105,6 +105,49 @@ class Search(forms.ModelForm):
 
         fields = ('search',)
 
+class RetrieveAllBlood(forms.ModelForm):
+
+    Reference_No = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    Date_Time = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    Vitamin_D = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    Parathyroid_Hormone = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    HAEMOGLOBIN = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    RBC = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    PCV = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    MCV = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    MCH = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    MCHC = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    RDW = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    WCC = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    Neutrophils = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    Lymphocytes = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    Monocytes = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    Eosinophils = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    Basophils = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    PLATELETS = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    ESR = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    Sodium = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    Potassium = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    Chloride = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    Urea = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    Creatinine = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    T_Protein = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    Albumin = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    Bilirubin = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    AST = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    ALP = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    GGT = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    eGFR = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    Bicarbonate = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+
+    class Meta:
+        model = RetrieveAllBlood
+
+        fields = ('Reference_No', 'Date_Time','HAEMOGLOBIN','RBC', 'PCV', 'MCV', 'MCH', 'MCHC', 'RDW', 'WCC',
+        'Neutrophils', 'Lymphocytes', 'Monocytes', 'Eosinophils', 'Basophils', 'PLATELETS', 'ESR','Vitamin_D','Parathyroid_Hormone',
+        'Potassium', 'Sodium', 'Chloride', 'Urea', 'Creatinine', 'T_Protein','Albumin', 'Bilirubin', 'AST', 'ALP', 'GGT', 'eGFR', 'Bicarbonate')
+
+
 class null(forms.ModelForm):
     class Meta:
         model = BloodSamples2

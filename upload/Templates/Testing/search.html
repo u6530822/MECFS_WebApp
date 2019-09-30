@@ -7,15 +7,21 @@
     <title>Search</title>
 </head>
 <body>
-<form method="POST" class="post-form">{% csrf_token %}
-<form class="form-inline">
-<div class="form-group mx-sm-3 mb-2">
+ <form method="POST" class="post-form">{% csrf_token %}
+     <div class="col-md-7">
+            <!-- Left column panels -->
+         <div class="list-group">
     {{ Search.as_ul}}
+    <button type="submit" name="Search" value="Search" class="save btn btn-default">Search</button>
+         </div>
+     </div>
+<div class="col-md-5 row ">
+     {{ bloodform.as_ul}}
 </div>
-    <button type="submit" name="search" value="search" class="save btn btn-default mb-2">Search</button>
+ </form>
 
-</form>
-</form>
+
+
 </body>
 </html>
 {% endblock %}
