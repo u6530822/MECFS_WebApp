@@ -5,6 +5,7 @@
     <head>
 
         <style>
+
             .drop-area {
                 border: 2px solid #ccc;
                 border-radius: 20px;
@@ -13,10 +14,16 @@
             {#margin: 100px auto;#} padding: 20px;
                 height: 500px;
             }
-
             .drop-area.highlight {
                 border: 2px dashed purple;
                 background-color: rgb(247, 212, 247);
+            }
+            .submit-file + label {
+                font-size: 1.25em;
+                font-weight: 700;
+                color: white;
+                background-color: black;
+                display: none;
             }
         </style>
 
@@ -31,8 +38,18 @@
 
         <!-- Custom styles for this template -->
         {#  <link href="css/sb-admin-2.min.css" rel="stylesheet">#}
+<link rel="stylesheet" type="text/css" href="//loading.io/css/loading.css"/>
+<link rel="stylesheet" type="text/css" href="//loading.io/css/loading-btn.css"/>
+
 
     </head>
+
+
+    <div class="py-5 bg-dark">
+        <div class="container">
+            <h1 class="m-0 text-center text-white">Select Files to Convert</h1>
+        </div>
+    </div>
 
     <body>
 
@@ -53,27 +70,41 @@
 
             <div class="col-lg-3">
 
-                <h1 class="my-4">Upload</h1>
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <input id="submit-file" type="file" name="document" accept="image/png, image/jpeg"
+
+                    <input id="submit-file"
+                           type="file"
+                           name="document"
+                           accept="image/png, image/jpeg"
+{#                           class="save btn btn-default"#}
+                           class = "hidden"
+                           size = "20"
                            multiple/>
+                    <label for="submit-file" class="save btn btn-default"
+                           style = "position: relative; top:80px">Select file</label>
+
+                    <p> </p>
                     {#                    style="display: none"#}
-                    <button type="submit" name="upload" value="upload" id="submit-button" class="save btn btn-default">
-                        Upload file
+                    <button type="submit" name="upload" value="upload" id="submit-button"
+                            onclick="this.classList.add('running');"
+                            class="btn btn-default ld-ext-right " style = "position: relative; top:300px">
+                        Convert file
+                        <div class="ld ld-ring ld-spin"></div>
+
                     </button>
+
 
                     {#                    <button type="submit"> Upload file</button>#}
                 </form>
             </div>
 
             <!-- /.col-lg-3 -->
-
             <div class="col-lg-9">
                 <div class="row">
 
-
                     <div class="col-lg-4 col-md-6 mb-4">
+
                         <div class="card h-100">
                             <div id="drop-area" class="drop-area" enctype="multipart/form-data">
 
@@ -98,26 +129,21 @@
                                 window.addEventListener('drop', stop, false)
                                 dropArea.addEventListener('drop', onDrop, false)
                                 gl.addEventListener('click', deleteFile, false)
-                              
                                 file_btn.addEventListener('change', displaySelectedFile, false)
-                              
                                 function highlight(e) {
                                     dropArea.classList.add('highlight')
                                     e.preventDefault()
                                     e.stopPropagation()
                                 }
-
                                 function unHighlight(e) {
                                     dropArea.classList.remove('highlight')
                                     e.preventDefault()
                                     e.stopPropagation()
                                 }
-
                                 function stop(e) {
                                     e.preventDefault()
                                     e.stopPropagation()
                                 }
-
                                 function onDrop(e) {
                                     let dt = e.dataTransfer
                                     let name = e.target.name
@@ -127,7 +153,6 @@
                                     displayFileName(name, files)
                                     {#document.getElementById('submit-file').files = files;#}
                                 }
-
                                 function displaySelectedFile(e) {
                                     {#remove display file of previously selected by button#}
                                     let d = document.getElementById("gallery");
@@ -137,7 +162,6 @@
                                             d.removeChild(d.firstChild);
                                         }
                                     }
-
                                     let dt = e.target
                                     let name = e.target.name
                                     let files = dt.files
@@ -145,13 +169,10 @@
                                     e.preventDefault();
                                     displayFileName(name, files)
                                     {#alert()#}
-
                                     if (window.files.length == 0) {
                                         displayFileName(name, files)
                                     }
                                 }
-
-
                                 function previewFile(files) {
                                     [...files].forEach((file) => {
                                         if (file.type.includes('image')) {
@@ -165,7 +186,6 @@
                                         }
                                     })
                                 }
-
                                 function displayFileName(name, files) {
                                     let file_id = 0;
                                     [...files].forEach((file) => {
@@ -183,13 +203,10 @@
                                     })
                                     document.getElementById('submit-file').files = files;
                                     {#document.getElementById('submit-file').files.push(files);#}
-
                                 }
-
                                 function reply_click(clicked_id) {
                                     alert(clicked_id);
                                 }
-
                                 function deleteFile(e) {
                                     var delete_or_not = confirm("Confirm Delete " + e.target.innerHTML.toString() + " ?");
                                     if (delete_or_not == true) {
@@ -197,70 +214,46 @@
                                         let d = document.getElementById("gallery");
                                         let d_nested = document.getElementById(selected_id);
                                         d.removeChild(d_nested);
-
-                                        delete_file_idx.push(selected_id);
-                                        document.getElementById("submit-button").value = delete_file_idx;
-                                        if(d.childElementCount === 0){
-                                            history.go(0)
-                                        }
-
-
-                                    } else {
-
-                                    }
-
-                                    {#let new_file_list = document.getElementById('submit-file').files;#}
-
-                                    {#var newFileArray = Array.from(document.getElementById('submit-file').files);#}
-                                    {#newFileArray.splice(parseInt(selected_id), 1);#}
-
-                                    //assign selected id to the name of submit button
-                                    {#var dataTrans = new DataTransfer()#}
-                                    {#document.getElementById('submit-file').files.push(newFileArray[0]);#}
-
-
-                                    {#alert(document.getElementById('submit-file').files.length);#}
-
-                                }
-
-
-                                function reply_click(clicked_id) {
-                                    alert(clicked_id);
-                                }
-
-                                function deleteFile(e) {
-                                    var delete_or_not = confirm("Confirm Delete " + e.target.innerHTML.toString() + " ?");
-                                    if (delete_or_not == true) {
-                                        let selected_id = e.target.id.toString();
-                                        let d = document.getElementById("gallery");
-                                        let d_nested = document.getElementById(selected_id);
-                                        d.removeChild(d_nested);
-
                                         delete_file_idx.push(selected_id);
                                         document.getElementById("submit-button").value = delete_file_idx;
                                         if (d.childElementCount === 0) {
                                             history.go(0)
                                         }
-
-
                                     } else {
-
                                     }
-
                                     {#let new_file_list = document.getElementById('submit-file').files;#}
-
                                     {#var newFileArray = Array.from(document.getElementById('submit-file').files);#}
                                     {#newFileArray.splice(parseInt(selected_id), 1);#}
-
                                     //assign selected id to the name of submit button
                                     {#var dataTrans = new DataTransfer()#}
                                     {#document.getElementById('submit-file').files.push(newFileArray[0]);#}
-
-
                                     {#alert(document.getElementById('submit-file').files.length);#}
-
                                 }
-
+                                function reply_click(clicked_id) {
+                                    alert(clicked_id);
+                                }
+                                function deleteFile(e) {
+                                    var delete_or_not = confirm("Confirm Delete " + e.target.innerHTML.toString() + " ?");
+                                    if (delete_or_not == true) {
+                                        let selected_id = e.target.id.toString();
+                                        let d = document.getElementById("gallery");
+                                        let d_nested = document.getElementById(selected_id);
+                                        d.removeChild(d_nested);
+                                        delete_file_idx.push(selected_id);
+                                        document.getElementById("submit-button").value = delete_file_idx;
+                                        if (d.childElementCount === 0) {
+                                            history.go(0)
+                                        }
+                                    } else {
+                                    }
+                                    {#let new_file_list = document.getElementById('submit-file').files;#}
+                                    {#var newFileArray = Array.from(document.getElementById('submit-file').files);#}
+                                    {#newFileArray.splice(parseInt(selected_id), 1);#}
+                                    //assign selected id to the name of submit button
+                                    {#var dataTrans = new DataTransfer()#}
+                                    {#document.getElementById('submit-file').files.push(newFileArray[0]);#}
+                                    {#alert(document.getElementById('submit-file').files.length);#}
+                                }
                             </script>
 
 
@@ -287,11 +280,10 @@
         <!-- /.container -->
     </footer>
 
+
     <!-- Bootstrap core JavaScript -->
     {#    <script src="vendor/jquery/jquery.min.js"></script>#}
     {#    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>#}
 
     </body>
 {% endblock %}
-
-

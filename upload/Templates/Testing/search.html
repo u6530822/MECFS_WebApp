@@ -1,0 +1,27 @@
+{% extends 'Testing/base.html' %}
+
+{% block content %}
+
+<html>
+<head>
+    <title>Search</title>
+</head>
+<body>
+ <form method="POST" class="post-form">{% csrf_token %}
+     <div class="col-md-7">
+            <!-- Left column panels -->
+         <div class="list-group">
+    {{ Search.as_ul}}
+    <button type="submit" name="Search" value="Search" class="save btn btn-default">Search</button>
+         </div>
+     </div>
+<div class="col-md-5 row ">
+     {{ bloodform.as_ul}}
+</div>
+ </form>
+
+
+
+</body>
+</html>
+{% endblock %}
