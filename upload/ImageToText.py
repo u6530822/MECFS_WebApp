@@ -2,12 +2,58 @@ import pytesseract
 from PIL import Image
 import re
 from pdf2image import convert_from_path
+import xlsxwriter
+import boto3
+import DBAccessKey
 
+access_key_id_global = DBAccessKey.DBAccessKey.access_key_id_global
+secret_access_key_global = DBAccessKey.DBAccessKey.secret_access_key_global
 
 class ImageToText:
 
     def __init__(self, name):
         self.name = name
+
+    def get_database_value():
+        """
+        Create an excel sheet with all the entries from the database
+        Assumption: All fields have the same size
+        """
+
+        # Set up workbook and define its name
+        workbook = xlsxwriter.Workbook('YourResults.xlsx')
+        worksheet = workbook.add_worksheet()
+
+        start = 0  # indicator to write either keys or values
+        row = 0
+        col = 0
+
+        # Obtain values from the database
+        database = boto3.resource('dynamodb', region_name='ap-southeast-2', aws_access_key_id=access_key_id_global,
+                                  aws_secret_access_key=secret_access_key_global)
+        table = database.Table('ME_CFS_DB')
+        response = table.scan()
+
+        for row_data in response['Items']:
+
+            # Obtain keys and record them down in the first row of the sheet
+            if start == 0:
+                for (k, v) in row_data.items():
+                    worksheet.write(row, col, k)  # write keys at row 0
+                    col += 1
+                start = 1
+                row = 1
+                col = 0
+
+            # Obtain values and record them down in the following rows of the sheet
+            for (k, v) in row_data.items():  # write values at other rows
+                worksheet.write(row, col, str(v))
+                col += 1
+
+            col = 0
+            row += 1
+
+        workbook.close()
 
     def extract_value(self, text_local, val_local, attribute):
         # extract whole text to string and number as different lines
