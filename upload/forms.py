@@ -98,7 +98,7 @@ class LoginForm(forms.ModelForm):
         fields = ('username','password')
 
 class Search(forms.ModelForm):
-    search = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
+    search = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}),required=False)
 
     class Meta:
         model = Search

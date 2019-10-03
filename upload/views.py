@@ -11,7 +11,6 @@ from .LoginCheck import *
 access_key_id_global = DBAccessKey.DBAccessKey.access_key_id_global
 secret_access_key_global = DBAccessKey.DBAccessKey.secret_access_key_global
 
-
 def index(request):
     return HttpResponse("<h1>Upload page</h1>")
 
@@ -255,6 +254,8 @@ def search(request):
     login_checker = LoginCheck('Login', 'valid')
     search = Search()
     if login_checker.check_login():
+        if request.POST.get("download_db"):
+            ImageToText.get_database_value()
         if request.POST.get("Search"):
             form = Search(request.POST)
             loginpost = form.save(commit=False)
