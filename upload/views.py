@@ -275,7 +275,6 @@ def search(request):
                     #initiate a form with initial values from values retrieved from DB
                     bloodform = RetrieveAllBlood(i)
 
-
             return render(request, 'Testing/search.html',{'bloodform': bloodform,'Search': search})
 
         args = {'Search': search}
