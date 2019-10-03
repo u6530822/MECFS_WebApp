@@ -150,6 +150,7 @@ def upload_file(request):
             list_of_files.clear()
 
             uploaded_file = request.FILES.getlist('document')
+            print("uploaded_file:",uploaded_file)
 
             btn_value = request.POST.get("upload", "")
             count = 0
@@ -274,6 +275,7 @@ def search(request):
                 for i in response['Items']:
                     #initiate a form with initial values from values retrieved from DB
                     bloodform = RetrieveAllBlood(i)
+
 
             return render(request, 'Testing/search.html',{'bloodform': bloodform,'Search': search})
 
