@@ -62,11 +62,12 @@ class ImageToText:
         elif index != -1 and len(text_local) > val_local + 1:
             # Check next line for value
             val_local2 = text_local[val_local + 1].split()
-            if val_local2[index][0].isnumeric():
+            # Make sure that value is in the same index in the next line and is numeric
+            if len(val_local2) > index and val_local2[index][0].isnumeric():
                 return val_local2[index]
             # Case where symbol *,>,<
-            elif (val_local2[index] == '*' or val_local2[index] == '>' or val_local2[index] == '<') \
-                    and (val_local2[index + 1][0].isnumeric()):
+            elif len(val_local2) > index and (val_local2[index] == '*' or val_local2[index] == '>'
+                                              or val_local2[index] == '<') and (val_local2[index + 1][0].isnumeric()):
                 return val_local2[index + 1]
             else:
                 return "N/A"
