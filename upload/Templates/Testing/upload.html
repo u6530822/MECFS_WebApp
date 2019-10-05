@@ -150,9 +150,16 @@
                                     let name = e.target.name
                                     let files = dt.files
                                     {#previewFile(files)#}
-                                    e.preventDefault();
-                                    displayFileName(name, files)
-                                    {#document.getElementById('submit-file').files = files;#}
+                                    var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+                                    var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+
+                                    if (isChrome){
+                                        e.preventDefault();
+                                        displayFileName(name, files)
+                                    }
+                                    if (isSafari){
+                                        document.getElementById('submit-file').files = files;
+                                    }
                                 }
                                 function displaySelectedFile(e) {
                                     {#remove display file of previously selected by button#}
