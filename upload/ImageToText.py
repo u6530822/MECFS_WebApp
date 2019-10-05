@@ -10,6 +10,7 @@ class ImageToText:
         self.name = name
 
     def extract_value(self, text_local, val_local, attribute):
+        # Total Text paragraph, text per line index, attribute to extract
         # extract whole text to string and number as different lines
 
         # modify character to cater for split
@@ -27,10 +28,15 @@ class ImageToText:
 
         val_local1 = text_local[val_local].split()
         print(val_local1)
-        index = val_local1.index(attribute)
+
+        # Get index of the attribute, if present
+        if attribute in val_local1:
+            index = val_local1.index(attribute)
+        else:
+            index = -1
 
         # Avoid cases where there is no value after index
-        if len(val_local1) > index + 1:
+        if index != -1 and len(val_local1) > index + 1:
             # value after index is not actual value if the value starts with alphabet
             if val_local1[index + 1][0].isalpha():
                 # Check next line for value by splitting next line
@@ -53,7 +59,7 @@ class ImageToText:
             else:
                 return val_local1[index + 1]
         # check if next line has value
-        elif len(text_local) > val_local + 1:
+        elif index != -1 and len(text_local) > val_local + 1:
             # Check next line for value
             val_local2 = text_local[val_local + 1].split()
             if val_local2[index][0].isnumeric():
@@ -63,11 +69,9 @@ class ImageToText:
                     and (val_local2[index + 1][0].isnumeric()):
                 return val_local2[index + 1]
             else:
-                # print("N/A 2")
                 return "N/A"
-        # if no next line return N/A
+        # if no next line or no index, return N/A
         else:
-            # print("N/A 3")
             return "N/A"
 
     def print_filename(self):
