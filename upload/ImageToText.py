@@ -45,7 +45,7 @@ class ImageToText:
                         worksheet.write(row, 1, k)  # write  at row 0, col 1
                     else:
                         worksheet.write(row, col, k)  # write keys at row 0
-                    col += 1
+                        col += 1
                 start = 1
                 row = 1
                 col = 2
@@ -58,7 +58,7 @@ class ImageToText:
                     worksheet.write(row, 1, str(v))  # write  at row 0, col 1
                 else:
                     worksheet.write(row, col, str(v))
-                col += 1
+                    col += 1
 
             col = 2
             row += 1
