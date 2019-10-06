@@ -26,7 +26,7 @@ class ImageToText:
 
         start = 0  # indicator to write either keys or values
         row = 0
-        col = 0
+        col = 2
 
         # Obtain values from the database
         database = boto3.resource('dynamodb', region_name='ap-southeast-2', aws_access_key_id=access_key_id_global,
@@ -39,18 +39,28 @@ class ImageToText:
             # Obtain keys and record them down in the first row of the sheet
             if start == 0:
                 for (k, v) in row_data.items():
-                    worksheet.write(row, col, k)  # write keys at row 0
-                    col += 1
+                    if k == "Reference_No":
+                        worksheet.write(row, 0, k)  # write  at row 0, col 0
+                    elif k == "Date_Time":
+                        worksheet.write(row, 1, k)  # write  at row 0, col 1
+                    else:
+                        worksheet.write(row, col, k)  # write keys at row 0
+                        col += 1
                 start = 1
                 row = 1
-                col = 0
+                col = 2
 
             # Obtain values and record them down in the following rows of the sheet
             for (k, v) in row_data.items():  # write values at other rows
-                worksheet.write(row, col, str(v))
-                col += 1
+                if k == "Reference_No":
+                    worksheet.write(row, 0, str(v))
+                elif k == "Date_Time":
+                    worksheet.write(row, 1, str(v))  # write  at row 0, col 1
+                else:
+                    worksheet.write(row, col, str(v))
+                    col += 1
 
-            col = 0
+            col = 2
             row += 1
 
         workbook.close()
