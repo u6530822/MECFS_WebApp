@@ -1,5 +1,6 @@
 from django import forms
 from .models import *
+from crispy_forms.helper import FormHelper
 
 class PostForm(forms.ModelForm):
 
@@ -31,12 +32,20 @@ class BloodSampleForm(forms.ModelForm):
     ALP  = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),)
     GGT = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),)
     eGFR = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),)
+    ALT = forms.CharField(widget=forms.TextInput(attrs={'class': style, }), )
     Bicarbonate = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),)
     File_name = forms.CharField(widget=forms.TextInput(attrs={'class': style, }), )
 
     class Meta:
         model = BloodSamples
-        fields = ('File_name','Reference_No','Date_Time','Potassium','Sodium','Chloride', 'Urea', 'Creatinine','T_Protein','Albumin','Bilirubin','AST','ALP','GGT','eGFR','Bicarbonate')
+        fields = ('File_name','Reference_No','Date_Time','Potassium','Sodium','Chloride', 'Urea', 'Creatinine','T_Protein','Albumin','Bilirubin','AST','ALP','GGT','eGFR','Bicarbonate','ALT')
+    def __init__(self, *args, **kwargs):
+        super(BloodSampleForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-6'
+        self.helper.field_class = 'col-md-6'
 
 class BloodSampleForm2(forms.ModelForm):
     #style = "form-control col-form-label row"
@@ -63,7 +72,16 @@ class BloodSampleForm2(forms.ModelForm):
 
     class Meta:
         model = BloodSamples2
-        fields = ('File_name','Reference_No','HAEMOGLOBIN','Date_Time','RBC','PCV','MCV', 'MCH', 'MCHC','RDW','WCC','Neutrophils','Lymphocytes','Monocytes','Eosinophils','Basophils','PLATELETS','ESR')
+        fields = ('File_name','Reference_No','Date_Time','HAEMOGLOBIN','RBC','PCV','MCV', 'MCH', 'MCHC','RDW','WCC','Neutrophils','Lymphocytes','Monocytes','Eosinophils','Basophils','PLATELETS','ESR')
+
+    def __init__(self, *args, **kwargs):
+        super(BloodSampleForm2, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-6'
+        self.helper.field_class = 'col-md-6'
+
 
 class BloodSampleForm3(forms.ModelForm):
     # making all fields mandatory else it wont be able to pushed it up to DB
@@ -77,6 +95,15 @@ class BloodSampleForm3(forms.ModelForm):
         model = BloodSamples3
         fields = ('File_name','Reference_No','Date_Time','Parathyroid_Hormone')
 
+    def __init__(self, *args, **kwargs):
+        super(BloodSampleForm3, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-6'
+        self.helper.field_class = 'col-md-6'
+
+
 class BloodSampleForm4(forms.ModelForm):
     # making all fields mandatory else it wont be able to pushed it up to DB
     style = ""
@@ -88,6 +115,14 @@ class BloodSampleForm4(forms.ModelForm):
     class Meta:
         model = BloodSamples4
         fields = ('File_name','Reference_No','Date_Time','Vitamin_D')
+
+    def __init__(self, *args, **kwargs):
+        super(BloodSampleForm4, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-6'
+        self.helper.field_class = 'col-md-6'
 
 class LoginForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class':"form-control form-control-user",}))
