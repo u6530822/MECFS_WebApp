@@ -2,12 +2,27 @@
 
 {% block content %}
     <div class="post">
+
+    <style>
+        .left-block{
+            height: 300px;
+        }
+
+        .right-block{
+            height: 300px;
+
+        }
+
+    </style>
         {% if post.published_date %}
             <div class="date">
                 {{ post.published_date }}
             </div>
         {% endif %}
         <form method="POST" class="post-form">{% csrf_token %}
+{#            <!–– Results: <input id = "left-block" type="text" name="fname" value={{ results }}><br>#}
+{#            <!–– Result2: <input id = "right-block" type="text" name="fname" value={{ results2 }}><br>#}
+
         <!–– Results: <input style="height:200px" type="text" name="fname" value={{ results }}><br>
         <!–– Result2: <input style="height:200px" type="text" name="fname" value={{ results2 }}><br>
 

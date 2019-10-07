@@ -1,5 +1,6 @@
 from django import forms
 from .models import *
+from crispy_forms.helper import FormHelper
 
 class PostForm(forms.ModelForm):
 
@@ -63,7 +64,16 @@ class BloodSampleForm2(forms.ModelForm):
 
     class Meta:
         model = BloodSamples2
-        fields = ('File_name','Reference_No','HAEMOGLOBIN','Date_Time','RBC','PCV','MCV', 'MCH', 'MCHC','RDW','WCC','Neutrophils','Lymphocytes','Monocytes','Eosinophils','Basophils','PLATELETS','ESR')
+        fields = ('File_name','Reference_No','Date_Time','HAEMOGLOBIN','RBC','PCV','MCV', 'MCH', 'MCHC','RDW','WCC','Neutrophils','Lymphocytes','Monocytes','Eosinophils','Basophils','PLATELETS','ESR')
+
+    def __init__(self, *args, **kwargs):
+        super(BloodSampleForm2, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-6'
+        self.helper.field_class = 'col-md-6'
+
 
 class BloodSampleForm3(forms.ModelForm):
     # making all fields mandatory else it wont be able to pushed it up to DB
