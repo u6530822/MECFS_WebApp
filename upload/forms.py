@@ -32,12 +32,13 @@ class BloodSampleForm(forms.ModelForm):
     ALP  = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),)
     GGT = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),)
     eGFR = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),)
+    ALT = forms.CharField(widget=forms.TextInput(attrs={'class': style, }), )
     Bicarbonate = forms.CharField(widget=forms.TextInput(attrs={'class': style, }),)
     File_name = forms.CharField(widget=forms.TextInput(attrs={'class': style, }), )
 
     class Meta:
         model = BloodSamples
-        fields = ('File_name','Reference_No','Date_Time','Potassium','Sodium','Chloride', 'Urea', 'Creatinine','T_Protein','Albumin','Bilirubin','AST','ALP','GGT','eGFR','Bicarbonate')
+        fields = ('File_name','Reference_No','Date_Time','Potassium','Sodium','Chloride', 'Urea', 'Creatinine','T_Protein','Albumin','Bilirubin','AST','ALP','GGT','eGFR','Bicarbonate','ALT')
     def __init__(self, *args, **kwargs):
         super(BloodSampleForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
