@@ -198,10 +198,16 @@ def returnform(dictionary):
     if "HAEMOGLOBIN" in dictionary:
         BloodSample = BloodSampleForm2(initial=dictionary)
 
+    if "MCH" in dictionary:
+        BloodSample = BloodSampleForm2(initial=dictionary)
+
     elif "Lymphocytes" in dictionary:
         BloodSample = BloodSampleForm2(initial=dictionary)
 
     elif "Potassium" in dictionary:
+        BloodSample = BloodSampleForm(initial=dictionary)
+
+    elif "Sodium" in dictionary:
         BloodSample = BloodSampleForm(initial=dictionary)
 
     elif "Parathyroid_Hormone" in dictionary:
@@ -209,6 +215,18 @@ def returnform(dictionary):
 
     elif "Vitamin_D" in dictionary:
         BloodSample = BloodSampleForm4(initial=dictionary)
+
+    elif "HAE" in dictionary['Reference_No']:
+        BloodSample = BloodSampleForm2(initial=dictionary)
+
+    elif "OHD" in dictionary['Reference_No']:
+        BloodSample = BloodSampleForm4(initial=dictionary)
+
+    elif "PTH" in dictionary['Reference_No']:
+        BloodSample = BloodSampleForm3(initial=dictionary)
+
+    elif "MBI" in dictionary['Reference_No']:
+        BloodSample = BloodSampleForm(initial=dictionary)
 
     return BloodSample
 
