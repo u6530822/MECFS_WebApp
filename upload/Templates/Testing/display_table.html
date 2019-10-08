@@ -48,8 +48,15 @@
         <div class="col-md-6 ">
 
 {#                {{ form|crispy }}#}
-            {% crispy form %}
+            {% if form != False %}
+                {% crispy form %}
                 <button type="submit" name="upload_to_DB" value="upload_to_DB" class="save btn btn-default ">Upload</button>
+             {% else %}
+                <h1>File can't be identified due to low resolution</h1>
+                {{ filename.as_ul }}
+                <button type="submit" name="next" value="next" class="save btn btn-default ">Next</button>
+
+            {% endif %}
 
 
         </div>

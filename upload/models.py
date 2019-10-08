@@ -115,6 +115,17 @@ class Search(models.Model):
     def __str__(self):
         return self.Reference_No
 
+class File_name(models.Model):
+
+    File_name = models.CharField(max_length=200)
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.File_name
+
 class RetrieveAllBlood(models.Model):
 
     Reference_No = models.CharField(max_length=200)

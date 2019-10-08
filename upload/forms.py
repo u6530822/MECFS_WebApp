@@ -140,6 +140,14 @@ class Search(forms.ModelForm):
 
         fields = ('search',)
 
+class File_name(forms.ModelForm):
+    File_name = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}),required=False)
+
+    class Meta:
+        model = File_name
+
+        fields = ('File_name',)
+
 class RetrieveAllBlood(forms.ModelForm):
 
     Reference_No = forms.CharField(widget=forms.TextInput(attrs={'class':"form-control",}))
