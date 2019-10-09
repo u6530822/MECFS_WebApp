@@ -9,10 +9,10 @@
             .drop-area {
                 border: 2px solid #ccc;
                 border-radius: 20px;
-                width: 320px;
+                width: 350px;
                 font-family: sans-serif;
             {#margin: 100px auto;#} padding: 20px;
-                height: 400px;
+                height: 380px;
             }
 
             .drop-area.highlight {
@@ -50,7 +50,7 @@
 
     <div class="py-5 bg-dark">
         <div class="container">
-            <h1 class="m-0 text-center text-white">Select Files to Convert</h1>
+            <h3 class="m-0 text-center text-white">Select Files to Convert</h3>
         </div>
     </div>
 
@@ -88,14 +88,14 @@
                            class="hidden"
                            size="20"
                            multiple/>
-                    <label for="submit-file" class="save btn btn-default"
+                    <label for="submit-file" class="save btn btn-primary"
                            style="position: relative; top:80px">Select file</label>
 
                     <p></p>
                     {#                    style="display: none"#}
                     <button type="submit" name="upload" value="upload" id="submit-button"
                             onclick="this.classList.add('running');"
-                            class="btn btn-default ld-ext-right " style="position: relative; top:300px">
+                            class="btn btn-primary ld-ext-right " style="position: relative; top:300px">
                         Convert file
                         <div class="ld ld-ring ld-spin"></div>
 
@@ -165,7 +165,7 @@
 
                                     if (isChrome) {
                                         e.preventDefault();
-                                        displayFileName(name, files)
+                                        displayFileName(name, files);
                                     }
                                     if (isSafari) {
                                         document.getElementById('submit-file').files = files;
