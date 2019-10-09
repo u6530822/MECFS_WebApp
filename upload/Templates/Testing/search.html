@@ -5,6 +5,11 @@
 <html>
 <head>
     <title>Search</title>
+    <div class="py-5 bg-dark">
+        <div class="container">
+            <h3 class="m-0 text-center text-white">Search and Download</h3>
+        </div>
+    </div>
 </head>
 <body>
  <form method="POST" class="post-form">{% csrf_token %}
@@ -12,8 +17,8 @@
             <!-- Left column panels -->
          <div class="list-group">
     {{ Search.as_ul}}
-    <button type="submit" name="Search" value="Search" class="save btn btn-default">Search</button>
-             <button type="submit" name="download_db" value="download_db" class="save btn btn-default">Download Excel File</button>
+    <button style="position: relative; top:80px" type="submit" name="Search" value="Search" class="save btn btn-primary">Search</button>
+             <button style="position: relative; top:80px; left: 20px" type="submit" name="download_db" value="download_db" class="save btn btn-primary">Download Excel File</button>
 
          </div>
      </div>
