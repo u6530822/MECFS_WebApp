@@ -124,12 +124,13 @@ list_of_dict = []
 def upload_file(request):
     login_checker = LoginCheck('Login', 'valid')
     if login_checker.check_login():
-        if request.POST.get("upload_to_DB"):
+        if request.POST.get("upload_to_DB") or request.POST.get("next") :
             context = request.POST
             mydict = context.dict()
 
             # put the upload to db here
-            upload_to_db(mydict)
+            if request.POST.get("upload_to_DB"):
+                upload_to_db(mydict)
 
             list_of_files.remove(request.POST.get("File_name"))
 
@@ -139,7 +140,11 @@ def upload_file(request):
             # show the next file that is pending to be uploaded
             for dict in list_of_dict:
                 if dict[0]["File_name"] == list_of_files[0]:
-                    args = {'button': list_of_files, 'form': returnform(dict[0])}
+                    if returnform(dict[0]) == False:
+                        args = {'button': list_of_files, 'form': returnform(dict[0]),'filename': File_name(initial=dict[0])}
+                    else:
+                        args = {'button': list_of_files, 'form': returnform(dict[0])}
+
                     return render(request, 'Testing/display_table.html', args)
 
             args = {'button': list_of_files, 'form': returnform(mydict)}
@@ -168,8 +173,11 @@ def upload_file(request):
                 object_img2txt = ImageToText(file)
                 object_img2txt_output = object_img2txt.print_filename()
                 list_of_dict.append(object_img2txt_output)
+                if returnform(object_img2txt_output[0]) == False:
+                    args = {'button': list_of_files, 'form': returnform(object_img2txt_output[0]),'filename': File_name(initial=object_img2txt_output[0])}
+                else:
+                    args = {'button': list_of_files, 'form': returnform(object_img2txt_output[0])}
 
-            args = {'button': list_of_files, 'form': returnform(object_img2txt_output[0])}
             return render(request, 'Testing/display_table.html', args)
 
         for file in list_of_files:
@@ -177,7 +185,10 @@ def upload_file(request):
                 for dict in list_of_dict:
                     filename = dict[0].get("File_name")
                     if dict[0]["File_name"] == file:
-                        args = {'button': list_of_files, 'form': returnform(dict[0])}
+                        if returnform(dict[0]) == False:
+                            args = {'button': list_of_files, 'form': returnform(dict[0]),'filename':File_name(initial=dict[0])}
+                        else:
+                            args = {'button': list_of_files, 'form': returnform(dict[0])}
 
                         return render(request, 'Testing/display_table.html', args)
 
@@ -197,38 +208,49 @@ def returnform(dictionary):
 
     if "HAEMOGLOBIN" in dictionary:
         BloodSample = BloodSampleForm2(initial=dictionary)
+        return BloodSample
 
     if "MCH" in dictionary:
         BloodSample = BloodSampleForm2(initial=dictionary)
+        return BloodSample
 
     elif "Lymphocytes" in dictionary:
         BloodSample = BloodSampleForm2(initial=dictionary)
+        return BloodSample
 
     elif "Potassium" in dictionary:
         BloodSample = BloodSampleForm(initial=dictionary)
+        return BloodSample
 
     elif "Sodium" in dictionary:
         BloodSample = BloodSampleForm(initial=dictionary)
+        return BloodSample
 
     elif "Parathyroid_Hormone" in dictionary:
         BloodSample = BloodSampleForm3(initial=dictionary)
+        return BloodSample
 
     elif "Vitamin_D" in dictionary:
         BloodSample = BloodSampleForm4(initial=dictionary)
+        return BloodSample
 
     elif "HAE" in dictionary['Reference_No']:
         BloodSample = BloodSampleForm2(initial=dictionary)
+        return BloodSample
 
     elif "OHD" in dictionary['Reference_No']:
         BloodSample = BloodSampleForm4(initial=dictionary)
+        return BloodSample
 
     elif "PTH" in dictionary['Reference_No']:
         BloodSample = BloodSampleForm3(initial=dictionary)
+        return BloodSample
 
     elif "MBI" in dictionary['Reference_No']:
         BloodSample = BloodSampleForm(initial=dictionary)
+        return BloodSample
 
-    return BloodSample
+    return False
 
 
 def login(request):
