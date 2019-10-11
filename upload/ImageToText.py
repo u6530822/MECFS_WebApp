@@ -181,7 +181,12 @@ class ImageToText:
                 if Ref_no == "N/A" and 'Reference_No' not in result_dict:
                     result_dict['Reference_No'] = "N/A"
                 elif Ref_no != "N/A":
-                    result_dict['Reference_No'] = Ref_no
+                    # Split ref num to intake the first "2 digits" + "-" + "7 digits"
+                    ref_no_array = (Ref_no.split('-', 2))
+                    if len(ref_no_array) >= 2:
+                        result_dict['Reference_No'] = ref_no_array[0] + "-" + ref_no_array[1]
+                    else:
+                        result_dict['Reference_No'] = Ref_no
 
             # Spaces surrounding PTH are to ensure other variation of PTH is not taken into account. Eg: PTH-C
             elif ' PTH ' in text[val]:
