@@ -5,6 +5,8 @@ from pdf2image import convert_from_path
 import xlsxwriter
 import boto3
 import DBAccessKey
+import sys
+import argparse
 
 access_key_id_global = DBAccessKey.DBAccessKey.access_key_id_global
 secret_access_key_global = DBAccessKey.DBAccessKey.secret_access_key_global
@@ -66,33 +68,32 @@ class ImageToText:
         workbook.close()
 
     def extract_value(self, text_local, val_local, attribute):
-        # extract whole text to string and number as different lines
+        # text_local - Total Text paragraph in the form of a list. Each row is an element in the list.
+        # val_local - row index
+        # attribute - attribute to extract
 
-        # modify character to cater for split
+        # modify character to cater for split in the selected line
         if 'Req. No.' in text_local[val_local] or 'Ref. Range' in text_local[val_local] \
                 or 'Lab No.' in text_local[val_local] or 'Vitamin D' in text_local[val_local]:
             text_local[val_local] = text_local[val_local].replace('Req. No.', 'ReqNo')
             text_local[val_local] = text_local[val_local].replace('Ref. Range', 'RefRange')
             text_local[val_local] = text_local[val_local].replace('Lab No.', 'LabNo')
-
-            #  TODO: Change all string first before extract value out rather than changing one line at a time
-            if re.search('Vitamin D(.*?)[\s]', (text_local[val_local])):
-                text_local[val_local] = re.sub('Vitamin D(.*?)[\s]', 'VitaminD ', text_local[val_local])
-            elif re.search('Vitamin D.*', (text_local[val_local])):
-                text_local[val_local] = re.sub('Vitamin D.*', 'VitaminD', text_local[val_local])
+            text_local[val_local] = text_local[val_local].replace('Vitamin D', 'VitaminD')
 
         val_local1 = text_local[val_local].split()
-        print(val_local1)
-        index = val_local1.index(attribute)
+
+        # Get index of the attribute, if present
+        if attribute in val_local1:
+            index = val_local1.index(attribute)
+        else:
+            index = -1
 
         # Avoid cases where there is no value after index
-        if len(val_local1) > index + 1:
+        if index != -1 and len(val_local1) > index + 1:
             # value after index is not actual value if the value starts with alphabet
             if val_local1[index + 1][0].isalpha():
                 # Check next line for value by splitting next line
                 val_local2 = text_local[val_local + 1].split()
-                print(val_local2)
-                print(index)
                 # Make sure line two has >= words as line one, make sure the index is numeric
                 if index < len(val_local2) and val_local2[index][0].isnumeric():
                     return val_local2[index]
@@ -102,40 +103,21 @@ class ImageToText:
                         (val_local2[index + 1][0].isnumeric()):
                     return val_local2[index + 1]
                 else:
-                    # print("N/A 1")
                     return "N/A"
             elif val_local1[index + 1] == '*' or val_local1[index + 1] == '>' or val_local1[index + 1] == '<':
                 return val_local1[index + 2]
             else:
                 return val_local1[index + 1]
-        # check if next line has value
-        elif len(text_local) > val_local + 1:
-            # Check next line for value
-            val_local2 = text_local[val_local + 1].split()
-            if val_local2[index][0].isnumeric():
-                return val_local2[index]
-            # Case where symbol *,>,<
-            elif (val_local2[index] == '*' or val_local2[index] == '>' or val_local2[index] == '<') \
-                    and (val_local2[index + 1][0].isnumeric()):
-                return val_local2[index + 1]
-            else:
-                # print("N/A 2")
-                return "N/A"
-        # if no next line return N/A
         else:
-            # print("N/A 3")
             return "N/A"
 
     def print_filename(self):
 
         # list of dictionary
         file_dict = []
-        print(self.name)
-        print("clear once")
-        filename= self.name.name
-        file= self.name
+        filename = self.name.name
+        file = self.name
 
-        print(type(filename))
         # if it is pdf
         if filename.lower().endswith('.pdf'):
             # Store all the pages of the PDF in a variable
@@ -210,8 +192,6 @@ class ImageToText:
                     result_dict['Parathyroid_Hormone'] = pth
 
             elif 'Vitamin D' in text[val]:
-                print("check")
-                print(text[val])
                 vitamin_d = ImageToText.extract_value(self, text, val, 'VitaminD')
                 if vitamin_d == "N/A" and 'Vitamin_D' not in result_dict:
                     result_dict['Vitamin_D'] = "N/A"
@@ -223,7 +203,7 @@ class ImageToText:
                                   'T.Protein', 'Albumin', 'ALP', 'Bilirubin', 'GGT',
                                   'AST', 'ALT', 'HAEMOGLOBIN', 'RBC', 'PCV', 'MCV', 'MCHC', 'RDW', 'wcc', 'Neutrophils',
                                   'Lymphocytes', 'Monocytes',
-                                  'Eosinophils', 'Basophils', 'PLATELETS', 'ESR']  # T.Protein
+                                  'Eosinophils', 'Basophils', 'PLATELETS', 'ESR']
 
                 for field_str in field_str_list:
                     if text[val].startswith(field_str):
@@ -241,5 +221,20 @@ class ImageToText:
         # return dictionary
         return result_dict
 
+'''
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--a1', type=str)
+    parser.add_argument('--a2', type=str)
+    parser.add_argument('--a3', type=int)
+    parser.add_argument('--a4', type=str)
+    args = parser.parse_args()
 
+    self = args.a1
+    word_list = args.a2.split(',')  # ['1','2','3','4']
+    index = args.a3
+    word = args.a4
 
+    #  python upload/ImageToText.py - -a1 = self - -a2 = "Vitamin D Vitamin,200,300" - -a3 = 0 - -a4 = VitaminD
+    print(ImageToText.extract_value(self, word_list, index, word))
+'''
